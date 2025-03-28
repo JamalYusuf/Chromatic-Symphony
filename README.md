@@ -1,5 +1,5 @@
 # Chromatic Symphony
-
+[Click here to experience the visualization](https://html-preview.github.io/?url=https://github.com/JamalYusuf/Chromatic-Symphony/blob/main/chromatic_symphony.html)
 ## Overview
 
 **Chromatic Symphony** is a single-file, self-contained web application built with HTML, CSS, and JavaScript, designed to run in modern browsers without external dependencies beyond a Google Fonts CDN for styling. This interactive digital art piece explores the concept of synesthesia—the blending of senses where colors trigger sounds and sounds evoke colors. It’s a creative playground that bridges science and art, allowing users to interact with a color gradient, play a color-coded piano, and experience melodies (both preloaded and custom) as visual and auditory symphonies.
