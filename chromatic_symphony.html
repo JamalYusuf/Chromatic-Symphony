@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chromatic Symphony</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Orbitron', sans-serif;
+            background: radial-gradient(circle at center, #0a0a0a, #1a1a1a);
+            color: #fff;
+            overflow-y: auto;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        header {
+            text-align: center;
+            padding: 30px;
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.95), rgba(0, 0, 0, 0.85));
+            border-bottom: 2px solid #00ffcc;
+        }
+        h1 {
+            font-size: 3em;
+            color: #00ffcc;
+            text-shadow: 0 0 20px #00ffcc, 0 0 40px #ff00cc;
+            margin: 0;
+        }
+        main {
+            flex: 1;
+            padding: 30px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        .section {
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 25px;
+            padding: 25px;
+            margin: 25px 0;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s ease;
+        }
+        .section:hover {
+            transform: translateY(-5px);
+        }
+        h2 {
+            color: #00ffcc;
+            text-shadow: 0 0 12px #00ffcc;
+            font-size: 1.8em;
+            margin-top: 0;
+        }
+        canvas {
+            width: 100%;
+            border-radius: 15px;
+            border: 2px solid rgba(255, 255, 255, 0.25);
+            background: rgba(0, 0, 0, 0.5);
+        }
+        #gradientCanvas { height: 70px; cursor: crosshair; }
+        #pianoCanvas { height: 100px; }
+        #soundWaveCanvas, #lightSpectrumCanvas { height: 200px; }
+        #display {
+            width: 320px;
+            height: 90px;
+            margin: 20px auto;
+            font-size: 1.5em;
+            text-align: center;
+            line-height: 90px;
+            border-radius: 20px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1), rgba(0, 0, 0, 0.7));
+            box-shadow: inset 0 0 25px rgba(0, 0, 0, 0.8), 0 0 15px rgba(0, 255, 204, 0.3);
+        }
+        .controls {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 15px;
+        }
+        button, select, input, textarea {
+            padding: 14px 30px;
+            border: none;
+            border-radius: 35px;
+            background: linear-gradient(45deg, #ff00cc, #00ffcc);
+            color: #fff;
+            font-size: 1.1em;
+            font-family: 'Orbitron', sans-serif;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(255, 0, 204, 0.5);
+        }
+        button:hover, select:hover, input:hover, textarea:hover {
+            transform: scale(1.08);
+            box-shadow: 0 8px 20px rgba(255, 0, 204, 0.8);
+        }
+        select {
+            background: linear-gradient(45deg, #333, #555);
+            padding: 12px 20px;
+        }
+        input { width: 200px; padding: 12px; }
+        textarea {
+            width: 100%;
+            max-width: 600px;
+            height: 100px;
+            resize: none;
+            background: linear-gradient(45deg, #333, #555);
+            border: 2px solid rgba(255, 255, 255, 0.25);
+            color: #fff;
+        }
+        p {
+            line-height: 1.7;
+            color: #e0e0e0;
+            font-size: 1.1em;
+        }
+        footer {
+            text-align: center;
+            padding: 20px;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.95), rgba(0, 0, 0, 0.85));
+            font-size: 1em;
+            color: #bbb;
+            border-top: 2px solid #00ffcc;
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <h1>Chromatic Symphony</h1>
+    </header>
+    <main>
+        <section class="section">
+            <h2>Welcome, Fellow Dreamer!</h2>
+            <p>Hey there, artist! Imagine a place where every color you splash onto a canvas hums with its own tune, where reds growl low and violets sing high. That’s "Chromatic Symphony," a digital playground I’ve crafted just for souls like us who see the world a little differently. I’m Jamal Yusuf, and this is my love letter to synesthesia—that wild, beautiful mash-up where senses collide. Here, colors don’t just sit pretty—they sing, and sounds don’t just echo—they paint. Drag a gradient, tickle a piano, or let classic melodies wash over you as hues dance. You can even scribble your own tunes in text and watch them bloom into color! It’s all built with a sci-fi vibe—think neon glows and glassy panels—drawing from those trippy old Winamp visualizers and the organic chaos of generative art. Ready to dive in and let your imagination run wild?</p>
+        </section>
+
+        <section class="section">
+            <h2>The Magic of Sound and Light</h2>
+            <p>Let’s talk waves, my friend—because that’s where this all begins. Sound’s a vibration, a ripple through the air that tickles your ears. It’s measured in hertz (Hz)—beats per second. We humans catch anything from a deep 20 Hz rumble to a shrill 20,000 Hz squeak. In this space, I’ve zoomed in on 220 Hz to 880 Hz—low growls to bright chimes—because they feel alive and playable.</p>
+            <p>Now, light? That’s a whole other beast—electromagnetic waves zipping at terahertz speeds (THz, a trillion hertz!). Red light’s down at 430 THz, slow and warm; violet’s up at 770 THz, fast and electric. They’re way too speedy to hear, but what if we slowed them down, mapped them to sound? That’s the trick here: I’ve tied the rainbow—red to violet—to that 220–880 Hz range, so every shade you see has a voice. It’s not science-fact exact—it’s art-science magic, inspired by synesthetes who hear colors in their heads. Cool, right?</p>
+        </section>
+
+        <section class="section">
+            <h2>Sound Waves in Motion</h2>
+            <canvas id="soundWaveCanvas"></canvas>
+            <p>Check this out—a living sketch of sound waves! Each tone you play ripples across this canvas, its height and speed showing the frequency. Low notes (like 220 Hz) stretch out lazy and wide; high ones (like 880 Hz) zip tight and fast. It’s like seeing the heartbeat of what you hear, a visual pulse for your sonic brushstrokes.</p>
+        </section>
+
+        <section class="section">
+            <h2>The Light Spectrum Unveiled</h2>
+            <canvas id="lightSpectrumCanvas"></canvas>
+            <p>Here’s the rainbow laid bare! This canvas maps colors to their secret frequencies—red at 430 THz on the left, violet at 770 THz on the right. As you play tones below, a marker slides along, linking each sound to its color twin. It’s a peek into how light and sound can hold hands, even across their cosmic scales.</p>
+        </section>
+
+        <section class="section">
+            <h2>Paint with Sound</h2>
+            <canvas id="gradientCanvas"></canvas>
+            <div id="display"></div>
+            <div class="controls">
+                <button id="toggleMode">Discrete Mode</button>
+                <button id="stopTone">Stop Tone</button>
+            </div>
+            <p>Grab this gradient and paint with your ears! Drag across it—red’s a low 220 Hz growl, violet’s a high 880 Hz chime. Toggle to "Discrete Mode" to snap to notes like A3 to A5, perfect for melody vibes. The display glows with your color and hums its frequency or note. Hit "Stop Tone" when you’re ready to hush it. It’s your sonic palette—go wild!</p>
+        </section>
+
+        <section class="section">
+            <h2>Tickle the Color Piano</h2>
+            <canvas id="pianoCanvas"></canvas>
+            <p>This isn’t just a piano—it’s a rainbow you can play! Each key from A3 to A5 is splashed with a hue from the gradient. Tap one, and it sings its color—low reds to high violets. It’s like brushing a melody across a canvas, where every note shines and resonates. Let your fingers dance and see what tunes spill out!</p>
+        </section>
+
+        <section class="section">
+            <h2>Songs in Color</h2>
+            <div class="controls">
+                <select id="songSelect"></select>
+                <button id="playSong">Play</button>
+                <button id="stopSong">Stop</button>
+            </div>
+            <p>Pick a song and watch it bloom! We’ve got classics like "Twinkle, Twinkle" and pop culture hits like "Sweet Home Alabama" or "Happy"—each melody lights up the gradient as it plays, every note a splash of color. Hit "Play" to let them sing, "Stop" to hush them. It’s like watching a musical painting unfold—timeless tunes turned into vibrant strokes of light and sound.</p>
+            <h3>Create Your Own Melody</h3>
+            <input type="text" id="melodyName" placeholder="Name Your Melody">
+            <textarea id="melodyInput" placeholder="e.g., C4 400, D4 400, E4 800 (note duration, separate by commas)"></textarea>
+            <div class="controls">
+                <button id="saveMelody">Save Melody</button>
+            </div>
+            <p>Scribble your own tune here! Type notes like "C4 400, D4 400, E4 800"—note then duration in milliseconds, separated by commas. Give it a name, hit "Save Melody," and it’ll pop into the dropdown. Play it back and see your colors sing! Use notes from A3 to A5 (e.g., C4, D#4, G5) and durations like 400 or 800. Unleash your inner composer!</p>
+        </section>
+    </main>
+    <footer>
+        <p>© Built by Jamal Yusuf</p>
+    </footer>
+    <script>
+        // Gradient setup
+        const gradientCanvas = document.getElementById('gradientCanvas');
+        gradientCanvas.width = Math.min(1000, window.innerWidth * 0.8);
+        const ctx = gradientCanvas.getContext('2d');
+        const gradient = ctx.createLinearGradient(0, 0, gradientCanvas.width, 0);
+        gradient.addColorStop(0, 'red');
+        gradient.addColorStop(0.16, 'orange');
+        gradient.addColorStop(0.33, 'yellow');
+        gradient.addColorStop(0.5, 'green');
+        gradient.addColorStop(0.66, 'blue');
+        gradient.addColorStop(0.83, 'indigo');
+        gradient.addColorStop(1, 'violet');
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, gradientCanvas.width, gradientCanvas.height);
+
+        // State
+        const notes = ['A3', 'A#3', 'B3', 'C4', 'C#4', 'D4', 'D#4', 'E4', 'F4', 'F#4', 'G4', 'G#4', 'A4', 'A#4', 'B4', 'C5', 'C#5', 'D5', 'D#5', 'E5', 'F5', 'F#5', 'G5', 'G#5', 'A5'];
+        let isInteracting = false, currentX = 0, mode = 'continuous', songPlaying = false, songInterval;
+
+        // Audio setup
+        const audioCtx = new AudioContext();
+        let oscillators = [], gainNode = audioCtx.createGain();
+        gainNode.connect(audioCtx.destination);
+        gainNode.gain.value = 0.4;
+
+        function playTone(freq) {
+            stopTone();
+            const osc1 = audioCtx.createOscillator();
+            const osc2 = audioCtx.createOscillator();
+            osc1.type = 'triangle';
+            osc2.type = 'sine';
+            osc1.frequency.value = freq;
+            osc2.frequency.value = freq * 1.02;
+            const filter = audioCtx.createBiquadFilter();
+            filter.type = 'lowpass';
+            filter.frequency.value = 2000;
+            osc1.connect(filter);
+            osc2.connect(filter);
+            filter.connect(gainNode);
+            osc1.start();
+            osc2.start();
+            oscillators = [osc1, osc2];
+        }
+
+        function stopTone() {
+            oscillators.forEach(osc => osc.stop());
+            oscillators = [];
+        }
+
+        // Gradient interaction
+        gradientCanvas.addEventListener('mousedown', startInteraction);
+        gradientCanvas.addEventListener('mousemove', moveInteraction);
+        gradientCanvas.addEventListener('mouseup', endInteraction);
+        gradientCanvas.addEventListener('touchstart', startInteraction);
+        gradientCanvas.addEventListener('touchmove', moveInteraction);
+        gradientCanvas.addEventListener('touchend', endInteraction);
+
+        function startInteraction(e) {
+            if (songPlaying) return;
+            isInteracting = true;
+            updatePosition(e);
+            playTone(getFrequency());
+            updateDisplay();
+        }
+
+        function moveInteraction(e) {
+            if (isInteracting && !songPlaying) {
+                updatePosition(e);
+                if (oscillators.length) oscillators[0].frequency.setValueAtTime(getFrequency(), audioCtx.currentTime);
+                updateDisplay();
+            }
+        }
+
+        function endInteraction() {
+            if (!songPlaying) {
+                isInteracting = false;
+                stopTone();
+            }
+        }
+
+        function updatePosition(e) {
+            const rect = gradientCanvas.getBoundingClientRect();
+            currentX = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
+            currentX = Math.max(0, Math.min(currentX, gradientCanvas.width));
+        }
+
+        function getPositionRatio() { return currentX / gradientCanvas.width; }
+
+        function getFrequency() {
+            const x = getPositionRatio();
+            return mode === 'continuous' ? 220 * Math.pow(2, 2 * x) : 220 * Math.pow(2, Math.round(24 * x) / 12);
+        }
+
+        function getColorAtX(x) {
+            const imageData = ctx.getImageData(Math.floor(x), 0, 1, 1).data;
+            return `rgb(${imageData[0]}, ${imageData[1]}, ${imageData[2]})`;
+        }
+
+        function updateDisplay() {
+            const x = getPositionRatio();
+            const color = getColorAtX(currentX);
+            const frequency = getFrequency();
+            const display = document.getElementById('display');
+            display.style.background = `radial-gradient(circle, ${color}, rgba(0,0,0,0.7))`;
+            display.textContent = mode === 'continuous' ? `${frequency.toFixed(0)} Hz` : notes[Math.round(24 * x)];
+            updateSoundWave(frequency, color);
+            updateLightSpectrum(frequency, color);
+        }
+
+        // Controls
+        document.getElementById('toggleMode').addEventListener('click', () => {
+            mode = mode === 'continuous' ? 'discrete' : 'continuous';
+            document.getElementById('toggleMode').textContent = `${mode === 'continuous' ? 'Discrete' : 'Continuous'} Mode`;
+            if (isInteracting) {
+                if (oscillators.length) oscillators[0].frequency.setValueAtTime(getFrequency(), audioCtx.currentTime);
+                updateDisplay();
+            }
+        });
+
+        document.getElementById('stopTone').addEventListener('click', () => {
+            stopTone();
+            isInteracting = false;
+            clearInterval(songInterval);
+            songPlaying = false;
+        });
+
+        // Color Piano (Reverted to Previous Style)
+        const pianoCanvas = document.getElementById('pianoCanvas');
+        pianoCanvas.width = gradientCanvas.width;
+        const pianoCtx = pianoCanvas.getContext('2d');
+        const keyWidth = pianoCanvas.width / 25;
+        notes.forEach((note, i) => {
+            const x = i * keyWidth;
+            const color = getColorAtX(x + keyWidth / 2);
+            pianoCtx.fillStyle = color;
+            pianoCtx.fillRect(x, 0, keyWidth, pianoCanvas.height);
+            pianoCtx.strokeStyle = '#fff';
+            pianoCtx.strokeRect(x, 0, keyWidth, pianoCanvas.height);
+            pianoCtx.fillStyle = '#fff';
+            pianoCtx.textAlign = 'center';
+            pianoCtx.fillText(note, x + keyWidth / 2, pianoCanvas.height / 2);
+        });
+
+        pianoCanvas.addEventListener('mousedown', e => {
+            if (songPlaying) return;
+            const rect = pianoCanvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            currentX = x * (gradientCanvas.width / pianoCanvas.width);
+            playTone(getFrequency());
+            updateDisplay();
+        });
+        pianoCanvas.addEventListener('mouseup', () => {
+            if (!songPlaying) stopTone();
+        });
+        pianoCanvas.addEventListener('touchstart', e => {
+            if (songPlaying) return;
+            const rect = pianoCanvas.getBoundingClientRect();
+            const x = e.touches[0].clientX - rect.left;
+            currentX = x * (gradientCanvas.width / pianoCanvas.width);
+            playTone(getFrequency());
+            updateDisplay();
+        });
+        pianoCanvas.addEventListener('touchend', () => {
+            if (!songPlaying) stopTone();
+        });
+
+        // Songs and Custom Melodies
+        const songs = {
+            twinkle: [
+                { note: 'C4', dur: 400 }, { note: 'C4', dur: 400 }, { note: 'G4', dur: 400 }, { note: 'G4', dur: 400 },
+                { note: 'A4', dur: 400 }, { note: 'A4', dur: 400 }, { note: 'G4', dur: 800 },
+                { note: 'F4', dur: 400 }, { note: 'F4', dur: 400 }, { note: 'E4', dur: 400 }, { note: 'E4', dur: 400 },
+                { note: 'D4', dur: 400 }, { note: 'D4', dur: 400 }, { note: 'C4', dur: 800 }
+            ],
+            ode: [
+                { note: 'E4', dur: 400 }, { note: 'E4', dur: 400 }, { note: 'F4', dur: 400 }, { note: 'G4', dur: 400 },
+                { note: 'G4', dur: 400 }, { note: 'F4', dur: 400 }, { note: 'E4', dur: 400 }, { note: 'D4', dur: 400 },
+                { note: 'C4', dur: 400 }, { note: 'C4', dur: 400 }, { note: 'D4', dur: 400 }, { note: 'E4', dur: 400 },
+                { note: 'E4', dur: 600 }, { note: 'D4', dur: 200 }, { note: 'D4', dur: 800 }
+            ],
+            mary: [
+                { note: 'E4', dur: 400 }, { note: 'D4', dur: 400 }, { note: 'C4', dur: 400 }, { note: 'D4', dur: 400 },
+                { note: 'E4', dur: 400 }, { note: 'E4', dur: 400 }, { note: 'E4', dur: 800 },
+                { note: 'D4', dur: 400 }, { note: 'D4', dur: 400 }, { note: 'D4', dur: 800 },
+                { note: 'E4', dur: 400 }, { note: 'G4', dur: 400 }, { note: 'G4', dur: 800 }
+            ],
+            happy: [
+                { note: 'C4', dur: 400 }, { note: 'C4', dur: 400 }, { note: 'D4', dur: 800 }, { note: 'C4', dur: 800 },
+                { note: 'F4', dur: 800 }, { note: 'E4', dur: 1200 }, { note: 'C4', dur: 400 }, { note: 'C4', dur: 400 },
+                { note: 'D4', dur: 800 }, { note: 'C4', dur: 800 }, { note: 'G4', dur: 800 }, { note: 'F4', dur: 1200 }
+            ],
+            jingle: [
+                { note: 'E4', dur: 400 }, { note: 'E4', dur: 400 }, { note: 'E4', dur: 800 }, { note: 'E4', dur: 400 },
+                { note: 'E4', dur: 400 }, { note: 'E4', dur: 800 }, { note: 'E4', dur: 400 }, { note: 'G4', dur: 400 },
+                { note: 'C4', dur: 600 }, { note: 'D4', dur: 200 }, { note: 'E4', dur: 1200 }
+            ],
+            row: [
+                { note: 'C4', dur: 400 }, { note: 'C4', dur: 400 }, { note: 'C4', dur: 400 }, { note: 'D4', dur: 400 },
+                { note: 'E4', dur: 800 }, { note: 'E4', dur: 400 }, { note: 'D4', dur: 400 }, { note: 'E4', dur: 400 },
+                { note: 'F4', dur: 400 }, { note: 'G4', dur: 800 }
+            ],
+            london: [
+                { note: 'G4', dur: 400 }, { note: 'A4', dur: 400 }, { note: 'G4', dur: 400 }, { note: 'F4', dur: 400 },
+                { note: 'E4', dur: 400 }, { note: 'F4', dur: 400 }, { note: 'G4', dur: 800 },
+                { note: 'D4', dur: 400 }, { note: 'E4', dur: 400 }, { note: 'F4', dur: 400 }, { note: 'E4', dur: 400 },
+                { note: 'D4', dur: 800 }
+            ],
+            frere: [
+                { note: 'F4', dur: 400 }, { note: 'G4', dur: 400 }, { note: 'A4', dur: 400 }, { note: 'F4', dur: 400 },
+                { note: 'A4', dur: 400 }, { note: 'G4', dur: 400 }, { note: 'F4', dur: 400 }, { note: 'G4', dur: 400 },
+                { note: 'F4', dur: 800 }
+            ],
+            sweetHome: [ // "Sweet Home Alabama" intro riff
+                { note: 'D4', dur: 400 }, { note: 'E4', dur: 400 }, { note: 'F#4', dur: 400 }, { note: 'G4', dur: 400 },
+                { note: 'A4', dur: 800 }, { note: 'G4', dur: 400 }, { note: 'F#4', dur: 400 },
+                { note: 'E4', dur: 400 }, { note: 'D4', dur: 800 }
+            ],
+            imperialMarch: [ // "Imperial March" from Star Wars
+                { note: 'G4', dur: 400 }, { note: 'G4', dur: 400 }, { note: 'G4', dur: 400 },
+                { note: 'E4', dur: 300 }, { note: 'B4', dur: 100 }, { note: 'G4', dur: 400 },
+                { note: 'E4', dur: 300 }, { note: 'B4', dur: 100 }, { note: 'G4', dur: 800 }
+            ],
+            mario: [ // "Super Mario Bros." theme intro
+                { note: 'E5', dur: 200 }, { note: 'E5', dur: 200 }, { note: 'E5', dur: 400 },
+                { note: 'C5', dur: 200 }, { note: 'E5', dur: 400 }, { note: 'G5', duruffle: 400 },
+                { note: 'G4', dur: 400 }
+            ]
+        };
+
+        const songSelect = document.getElementById('songSelect');
+        const melodyInput = document.getElementById('melodyInput');
+        const melodyNameInput = document.getElementById('melodyName');
+        const saveMelodyButton = document.getElementById('saveMelody');
+
+        function updateSongDropdown() {
+            songSelect.innerHTML = '';
+            Object.keys(songs).forEach(key => {
+                const option = document.createElement('option');
+                option.value = key;
+                option.textContent = key.charAt(0).toUpperCase() + key.slice(1).replace(/([A-Z])/g, ' $1');
+                songSelect.appendChild(option);
+            });
+        }
+        updateSongDropdown();
+
+        document.getElementById('playSong').addEventListener('click', () => {
+            if (songPlaying) return;
+            songPlaying = true;
+            const song = songs[document.getElementById('songSelect').value];
+            let i = 0;
+            songInterval = setInterval(() => {
+                if (i >= song.length) {
+                    clearInterval(songInterval);
+                    stopTone();
+                    songPlaying = false;
+                    return;
+                }
+                const { note, dur } = song[i++];
+                const noteIdx = notes.indexOf(note);
+                currentX = (noteIdx / 24) * gradientCanvas.width;
+                playTone(220 * Math.pow(2, noteIdx / 12));
+                updateDisplay();
+                setTimeout(stopTone, dur * 0.9);
+            }, 400);
+        });
+
+        document.getElementById('stopSong').addEventListener('click', () => {
+            clearInterval(songInterval);
+            stopTone();
+            songPlaying = false;
+        });
+
+        saveMelodyButton.addEventListener('click', () => {
+            const name = melodyNameInput.value.trim();
+            const input = melodyInput.value.trim();
+            if (!name || !input) {
+                alert('Please enter a name and melody!');
+                return;
+            }
+            try {
+                const melody = input.split(',').map(part => {
+                    const [note, dur] = part.trim().split(/\s+/);
+                    if (!notes.includes(note) || isNaN(dur) || dur <= 0) {
+                        throw new Error(`Invalid note "${note}" or duration "${dur}"! Use notes A3–A5 and positive durations (e.g., C4 400).`);
+                    }
+                    return { note, dur: parseInt(dur) };
+                });
+                const key = name.toLowerCase().replace(/\s+/g, '');
+                songs[key] = melody;
+                updateSongDropdown();
+                melodyNameInput.value = '';
+                melodyInput.value = '';
+                songSelect.value = key;
+            } catch (error) {
+                alert(error.message);
+            }
+        });
+
+        // Sound Wave Visualization
+        const soundWaveCanvas = document.getElementById('soundWaveCanvas');
+        soundWaveCanvas.width = gradientCanvas.width;
+        const soundWaveCtx = soundWaveCanvas.getContext('2d');
+
+        function updateSoundWave(freq, color) {
+            soundWaveCtx.clearRect(0, 0, soundWaveCanvas.width, soundWaveCanvas.height);
+            soundWaveCtx.beginPath();
+            soundWaveCtx.strokeStyle = color;
+            soundWaveCtx.lineWidth = 2;
+            const amplitude = soundWaveCanvas.height / 4;
+            const wavelength = soundWaveCanvas.width / (freq / 220);
+            for (let x = 0; x < soundWaveCanvas.width; x++) {
+                const y = soundWaveCanvas.height / 2 + amplitude * Math.sin((x / wavelength) * 2 * Math.PI);
+                x === 0 ? soundWaveCtx.moveTo(x, y) : soundWaveCtx.lineTo(x, y);
+            }
+            soundWaveCtx.stroke();
+        }
+
+        // Light Spectrum Visualization (Reverted to Previous Style)
+        const lightSpectrumCanvas = document.getElementById('lightSpectrumCanvas');
+        lightSpectrumCanvas.width = gradientCanvas.width;
+        const lightSpectrumCtx = lightSpectrumCanvas.getContext('2d');
+        const lightGradient = lightSpectrumCtx.createLinearGradient(0, 0, lightSpectrumCanvas.width, 0);
+        lightGradient.addColorStop(0, 'red');
+        lightGradient.addColorStop(0.16, 'orange');
+        lightGradient.addColorStop(0.33, 'yellow');
+        lightGradient.addColorStop(0.5, 'green');
+        lightGradient.addColorStop(0.66, 'blue');
+        lightGradient.addColorStop(0.83, 'indigo');
+        lightGradient.addColorStop(1, 'violet');
+        lightSpectrumCtx.fillStyle = lightGradient;
+        lightSpectrumCtx.fillRect(0, 0, lightSpectrumCanvas.width, lightSpectrumCanvas.height);
+
+        function updateLightSpectrum(freq, color) {
+            lightSpectrumCtx.fillStyle = lightGradient;
+            lightSpectrumCtx.fillRect(0, 0, lightSpectrumCanvas.width, lightSpectrumCanvas.height);
+            const x = ((freq - 220) / (880 - 220)) * lightSpectrumCanvas.width;
+            lightSpectrumCtx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+            lightSpectrumCtx.fillRect(x - 5, 0, 10, lightSpectrumCanvas.height);
+            lightSpectrumCtx.fillStyle = '#000';
+            lightSpectrumCtx.textAlign = 'center';
+            lightSpectrumCtx.fillText(`${freq.toFixed(0)} Hz`, x, lightSpectrumCanvas.height / 2);
+        }
+    </script>
+</body>
+</html>
