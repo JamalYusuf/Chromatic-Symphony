@@ -233,11 +233,31 @@
             osc1.start();
             osc2.start();
             oscillators = [osc1, osc2];
+            updateVisualizations(freq, getColorAtX(currentX)); // Update visualizations on play
         }
 
         function stopTone() {
             oscillators.forEach(osc => osc.stop());
             oscillators = [];
+            clearVisualizations(); // Clear visualizations when stopped
+        }
+
+        // Centralized update for visualizations
+        function updateVisualizations(freq, color) {
+            updateSoundWave(freq, color);
+            updateLightSpectrum(freq, color);
+            updateDisplay(freq, color);
+        }
+
+        function clearVisualizations() {
+            const soundWaveCtx = soundWaveCanvas.getContext('2d');
+            soundWaveCtx.clearRect(0, 0, soundWaveCanvas.width, soundWaveCanvas.height);
+            const lightSpectrumCtx = lightSpectrumCanvas.getContext('2d');
+            lightSpectrumCtx.fillStyle = lightGradient;
+            lightSpectrumCtx.fillRect(0, 0, lightSpectrumCanvas.width, lightSpectrumCanvas.height);
+            const display = document.getElementById('display');
+            display.style.background = 'radial-gradient(circle, rgba(255, 255, 255, 0.1), rgba(0,0,0,0.7))';
+            display.textContent = '';
         }
 
         // Gradient interaction
@@ -253,14 +273,16 @@
             isInteracting = true;
             updatePosition(e);
             playTone(getFrequency());
-            updateDisplay();
         }
 
         function moveInteraction(e) {
             if (isInteracting && !songPlaying) {
                 updatePosition(e);
-                if (oscillators.length) oscillators[0].frequency.setValueAtTime(getFrequency(), audioCtx.currentTime);
-                updateDisplay();
+                if (oscillators.length) {
+                    const freq = getFrequency();
+                    oscillators[0].frequency.setValueAtTime(freq, audioCtx.currentTime);
+                    updateVisualizations(freq, getColorAtX(currentX));
+                }
             }
         }
 
@@ -289,24 +311,21 @@
             return `rgb(${imageData[0]}, ${imageData[1]}, ${imageData[2]})`;
         }
 
-        function updateDisplay() {
+        function updateDisplay(freq, color) {
             const x = getPositionRatio();
-            const color = getColorAtX(currentX);
-            const frequency = getFrequency();
             const display = document.getElementById('display');
             display.style.background = `radial-gradient(circle, ${color}, rgba(0,0,0,0.7))`;
-            display.textContent = mode === 'continuous' ? `${frequency.toFixed(0)} Hz` : notes[Math.round(24 * x)];
-            updateSoundWave(frequency, color);
-            updateLightSpectrum(frequency, color);
+            display.textContent = mode === 'continuous' ? `${freq.toFixed(0)} Hz` : notes[Math.round(24 * x)];
         }
 
         // Controls
         document.getElementById('toggleMode').addEventListener('click', () => {
             mode = mode === 'continuous' ? 'discrete' : 'continuous';
             document.getElementById('toggleMode').textContent = `${mode === 'continuous' ? 'Discrete' : 'Continuous'} Mode`;
-            if (isInteracting) {
-                if (oscillators.length) oscillators[0].frequency.setValueAtTime(getFrequency(), audioCtx.currentTime);
-                updateDisplay();
+            if (isInteracting && oscillators.length) {
+                const freq = getFrequency();
+                oscillators[0].frequency.setValueAtTime(freq, audioCtx.currentTime);
+                updateVisualizations(freq, getColorAtX(currentX));
             }
         });
 
@@ -317,7 +336,7 @@
             songPlaying = false;
         });
 
-        // Color Piano (Reverted to Previous Style)
+        // Color Piano
         const pianoCanvas = document.getElementById('pianoCanvas');
         pianoCanvas.width = gradientCanvas.width;
         const pianoCtx = pianoCanvas.getContext('2d');
@@ -339,8 +358,8 @@
             const rect = pianoCanvas.getBoundingClientRect();
             const x = e.clientX - rect.left;
             currentX = x * (gradientCanvas.width / pianoCanvas.width);
-            playTone(getFrequency());
-            updateDisplay();
+            const freq = getFrequency();
+            playTone(freq);
         });
         pianoCanvas.addEventListener('mouseup', () => {
             if (!songPlaying) stopTone();
@@ -350,8 +369,8 @@
             const rect = pianoCanvas.getBoundingClientRect();
             const x = e.touches[0].clientX - rect.left;
             currentX = x * (gradientCanvas.width / pianoCanvas.width);
-            playTone(getFrequency());
-            updateDisplay();
+            const freq = getFrequency();
+            playTone(freq);
         });
         pianoCanvas.addEventListener('touchend', () => {
             if (!songPlaying) stopTone();
@@ -363,7 +382,7 @@
                 { note: 'C4', dur: 400 }, { note: 'C4', dur: 400 }, { note: 'G4', dur: 400 }, { note: 'G4', dur: 400 },
                 { note: 'A4', dur: 400 }, { note: 'A4', dur: 400 }, { note: 'G4', dur: 800 },
                 { note: 'F4', dur: 400 }, { note: 'F4', dur: 400 }, { note: 'E4', dur: 400 }, { note: 'E4', dur: 400 },
-                { note: 'D4', dur: 400 }, { note: 'D4', dur: 400 }, { note: 'C4', dur: 800 }
+                { note: 'D4', dur: 400 }, { note: 'D4', dur: 400 }, { note: "C4", dur: 800 }
             ],
             ode: [
                 { note: 'E4', dur: 400 }, { note: 'E4', dur: 400 }, { note: 'F4', dur: 400 }, { note: 'G4', dur: 400 },
@@ -403,19 +422,19 @@
                 { note: 'A4', dur: 400 }, { note: 'G4', dur: 400 }, { note: 'F4', dur: 400 }, { note: 'G4', dur: 400 },
                 { note: 'F4', dur: 800 }
             ],
-            sweetHome: [ // "Sweet Home Alabama" intro riff
+            sweetHome: [
                 { note: 'D4', dur: 400 }, { note: 'E4', dur: 400 }, { note: 'F#4', dur: 400 }, { note: 'G4', dur: 400 },
                 { note: 'A4', dur: 800 }, { note: 'G4', dur: 400 }, { note: 'F#4', dur: 400 },
                 { note: 'E4', dur: 400 }, { note: 'D4', dur: 800 }
             ],
-            imperialMarch: [ // "Imperial March" from Star Wars
+            imperialMarch: [
                 { note: 'G4', dur: 400 }, { note: 'G4', dur: 400 }, { note: 'G4', dur: 400 },
                 { note: 'E4', dur: 300 }, { note: 'B4', dur: 100 }, { note: 'G4', dur: 400 },
                 { note: 'E4', dur: 300 }, { note: 'B4', dur: 100 }, { note: 'G4', dur: 800 }
             ],
-            mario: [ // "Super Mario Bros." theme intro
+            mario: [
                 { note: 'E5', dur: 200 }, { note: 'E5', dur: 200 }, { note: 'E5', dur: 400 },
-                { note: 'C5', dur: 200 }, { note: 'E5', dur: 400 }, { note: 'G5', duruffle: 400 },
+                { note: 'C5', dur: 200 }, { note: 'E5', dur: 400 }, { note: 'G5', dur: 400 },
                 { note: 'G4', dur: 400 }
             ]
         };
@@ -451,10 +470,10 @@
                 const { note, dur } = song[i++];
                 const noteIdx = notes.indexOf(note);
                 currentX = (noteIdx / 24) * gradientCanvas.width;
-                playTone(220 * Math.pow(2, noteIdx / 12));
-                updateDisplay();
+                const freq = 220 * Math.pow(2, noteIdx / 12);
+                playTone(freq);
                 setTimeout(stopTone, dur * 0.9);
-            }, 400);
+            }, 400); // Adjusted to match typical note duration
         });
 
         document.getElementById('stopSong').addEventListener('click', () => {
@@ -508,7 +527,7 @@
             soundWaveCtx.stroke();
         }
 
-        // Light Spectrum Visualization (Reverted to Previous Style)
+        // Light Spectrum Visualization
         const lightSpectrumCanvas = document.getElementById('lightSpectrumCanvas');
         lightSpectrumCanvas.width = gradientCanvas.width;
         const lightSpectrumCtx = lightSpectrumCanvas.getContext('2d');
