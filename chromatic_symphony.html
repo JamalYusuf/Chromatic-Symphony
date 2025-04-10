@@ -61,8 +61,8 @@
         }
         #gradientCanvas { height: 70px; cursor: crosshair; }
         #pianoCanvas { height: 100px; }
-        #soundWaveCanvas, #lightSpectrumCanvas { height: 200px; }
-        #display {
+        .soundWaveCanvas, .lightSpectrumCanvas { height: 150px; margin-top: 20px; }
+        .noteDisplay {
             width: 320px;
             height: 90px;
             margin: 20px auto;
@@ -140,33 +140,38 @@
             <p>Let’s talk waves, my friend—because that’s where this all begins. Sound’s a vibration, a ripple through the air that tickles your ears. It’s measured in hertz (Hz)—beats per second. We humans catch anything from a deep 20 Hz rumble to a shrill 20,000 Hz squeak. In this space, I’ve zoomed in on 220 Hz to 880 Hz—low growls to bright chimes—because they feel alive and playable.</p>
             <p>Now, light? That’s a whole other beast—electromagnetic waves zipping at terahertz speeds (THz, a trillion hertz!). Red light’s down at 430 THz, slow and warm; violet’s up at 770 THz, fast and electric. They’re way too speedy to hear, but what if we slowed them down, mapped them to sound? That’s the trick here: I’ve tied the rainbow—red to violet—to that 220–880 Hz range, so every shade you see has a voice. It’s not science-fact exact—it’s art-science magic, inspired by synesthetes who hear colors in their heads. Cool, right?</p>
         </section>
-
-        <section class="section">
-            <h2>Sound Waves in Motion</h2>
-            <canvas id="soundWaveCanvas"></canvas>
-            <p>Check this out—a living sketch of sound waves! Each tone you play ripples across this canvas, its height and speed showing the frequency. Low notes (like 220 Hz) stretch out lazy and wide; high ones (like 880 Hz) zip tight and fast. It’s like seeing the heartbeat of what you hear, a visual pulse for your sonic brushstrokes.</p>
-        </section>
-
-        <section class="section">
-            <h2>The Light Spectrum Unveiled</h2>
-            <canvas id="lightSpectrumCanvas"></canvas>
-            <p>Here’s the rainbow laid bare! This canvas maps colors to their secret frequencies—red at 430 THz on the left, violet at 770 THz on the right. As you play tones below, a marker slides along, linking each sound to its color twin. It’s a peek into how light and sound can hold hands, even across their cosmic scales.</p>
-        </section>
-
         <section class="section">
             <h2>Paint with Sound</h2>
             <canvas id="gradientCanvas"></canvas>
-            <div id="display"></div>
+            <div id="noteDisplayPaint" class="noteDisplay"></div>
+            <canvas id="soundWaveCanvasPaint" class="soundWaveCanvas"></canvas>
+            <canvas id="lightSpectrumCanvasPaint" class="lightSpectrumCanvas"></canvas>
             <div class="controls">
                 <button id="toggleMode">Discrete Mode</button>
                 <button id="stopTone">Stop Tone</button>
             </div>
             <p>Grab this gradient and paint with your ears! Drag across it—red’s a low 220 Hz growl, violet’s a high 880 Hz chime. Toggle to "Discrete Mode" to snap to notes like A3 to A5, perfect for melody vibes. The display glows with your color and hums its frequency or note. Hit "Stop Tone" when you’re ready to hush it. It’s your sonic palette—go wild!</p>
         </section>
+        <section class="section">
+            <h2>Sound Waves in Motion</h2>
+            <canvas id="soundWaveCanvasMain" class="soundWaveCanvas"></canvas>
+            <p>Check this out—a living sketch of sound waves! Each tone you play ripples across this canvas, its height and speed showing the frequency. Low notes (like 220 Hz) stretch out lazy and wide; high ones (like 880 Hz) zip tight and fast. It’s like seeing the heartbeat of what you hear, a visual pulse for your sonic brushstrokes.</p>
+        </section>
+
+        <section class="section">
+            <h2>The Light Spectrum Unveiled</h2>
+            <canvas id="lightSpectrumCanvasMain" class="lightSpectrumCanvas"></canvas>
+            <p>Here’s the rainbow laid bare! This canvas maps colors to their secret frequencies—red at 430 THz on the left, violet at 770 THz on the right. As you play tones below, a marker slides along, linking each sound to its color twin. It’s a peek into how light and sound can hold hands, even across their cosmic scales.</p>
+        </section>
+
+
 
         <section class="section">
             <h2>Tickle the Color Piano</h2>
             <canvas id="pianoCanvas"></canvas>
+            <div id="noteDisplayPiano" class="noteDisplay"></div>
+            <canvas id="soundWaveCanvasPiano" class="soundWaveCanvas"></canvas>
+            <canvas id="lightSpectrumCanvasPiano" class="lightSpectrumCanvas"></canvas>
             <p>This isn’t just a piano—it’s a rainbow you can play! Each key from A3 to A5 is splashed with a hue from the gradient. Tap one, and it sings its color—low reds to high violets. It’s like brushing a melody across a canvas, where every note shines and resonates. Let your fingers dance and see what tunes spill out!</p>
         </section>
 
@@ -177,6 +182,9 @@
                 <button id="playSong">Play</button>
                 <button id="stopSong">Stop</button>
             </div>
+            <div id="noteDisplaySongs" class="noteDisplay"></div>
+            <canvas id="soundWaveCanvasSongs" class="soundWaveCanvas"></canvas>
+            <canvas id="lightSpectrumCanvasSongs" class="lightSpectrumCanvas"></canvas>
             <p>Pick a song and watch it bloom! We’ve got classics like "Twinkle, Twinkle" and pop culture hits like "Sweet Home Alabama" or "Happy"—each melody lights up the gradient as it plays, every note a splash of color. Hit "Play" to let them sing, "Stop" to hush them. It’s like watching a musical painting unfold—timeless tunes turned into vibrant strokes of light and sound.</p>
             <h3>Create Your Own Melody</h3>
             <input type="text" id="melodyName" placeholder="Name Your Melody">
@@ -233,31 +241,119 @@
             osc1.start();
             osc2.start();
             oscillators = [osc1, osc2];
-            updateVisualizations(freq, getColorAtX(currentX)); // Update visualizations on play
+            updateAllVisualizations(freq, getColorAtX(currentX));
         }
 
         function stopTone() {
             oscillators.forEach(osc => osc.stop());
             oscillators = [];
-            clearVisualizations(); // Clear visualizations when stopped
+            clearAllVisualizations();
         }
 
-        // Centralized update for visualizations
-        function updateVisualizations(freq, color) {
-            updateSoundWave(freq, color);
-            updateLightSpectrum(freq, color);
-            updateDisplay(freq, color);
+        // Visualization setup
+        const canvases = {
+            soundWave: [
+                document.getElementById('soundWaveCanvasMain'),
+                document.getElementById('soundWaveCanvasPaint'),
+                document.getElementById('soundWaveCanvasPiano'),
+                document.getElementById('soundWaveCanvasSongs')
+            ],
+            lightSpectrum: [
+                document.getElementById('lightSpectrumCanvasMain'),
+                document.getElementById('lightSpectrumCanvasPaint'),
+                document.getElementById('lightSpectrumCanvasPiano'),
+                document.getElementById('lightSpectrumCanvasSongs')
+            ],
+            noteDisplays: [
+                document.getElementById('noteDisplayPaint'),
+                document.getElementById('noteDisplayPiano'),
+                document.getElementById('noteDisplaySongs')
+            ]
+        };
+
+        canvases.soundWave.forEach(canvas => canvas.width = gradientCanvas.width);
+        canvases.lightSpectrum.forEach(canvas => {
+            canvas.width = gradientCanvas.width;
+            const ctx = canvas.getContext('2d');
+            const grad = ctx.createLinearGradient(0, 0, canvas.width, 0);
+            grad.addColorStop(0, 'red');
+            grad.addColorStop(0.16, 'orange');
+            grad.addColorStop(0.33, 'yellow');
+            grad.addColorStop(0.5, 'green');
+            grad.addColorStop(0.66, 'blue');
+            grad.addColorStop(0.83, 'indigo');
+            grad.addColorStop(1, 'violet');
+            ctx.fillStyle = grad;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+        });
+
+        function updateAllVisualizations(freq, color) {
+            const x = getPositionRatio();
+            const noteText = mode === 'continuous' ? `${freq.toFixed(0)} Hz` : notes[Math.round(24 * x)];
+            canvases.soundWave.forEach(canvas => updateSoundWave(canvas, freq, color));
+            canvases.lightSpectrum.forEach(canvas => updateLightSpectrum(canvas, freq));
+            canvases.noteDisplays.forEach(display => {
+                display.style.background = `radial-gradient(circle, ${color}, rgba(0,0,0,0.7))`;
+                display.textContent = noteText;
+            });
         }
 
-        function clearVisualizations() {
-            const soundWaveCtx = soundWaveCanvas.getContext('2d');
-            soundWaveCtx.clearRect(0, 0, soundWaveCanvas.width, soundWaveCanvas.height);
-            const lightSpectrumCtx = lightSpectrumCanvas.getContext('2d');
-            lightSpectrumCtx.fillStyle = lightGradient;
-            lightSpectrumCtx.fillRect(0, 0, lightSpectrumCanvas.width, lightSpectrumCanvas.height);
-            const display = document.getElementById('display');
-            display.style.background = 'radial-gradient(circle, rgba(255, 255, 255, 0.1), rgba(0,0,0,0.7))';
-            display.textContent = '';
+        function clearAllVisualizations() {
+            canvases.soundWave.forEach(canvas => {
+                const ctx = canvas.getContext('2d');
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+            });
+            canvases.lightSpectrum.forEach(canvas => {
+                const ctx = canvas.getContext('2d');
+                ctx.fillStyle = ctx.createLinearGradient(0, 0, canvas.width, 0);
+                ctx.fillStyle.addColorStop(0, 'red');
+                ctx.fillStyle.addColorStop(0.16, 'orange');
+                ctx.fillStyle.addColorStop(0.33, 'yellow');
+                ctx.fillStyle.addColorStop(0.5, 'green');
+                ctx.fillStyle.addColorStop(0.66, 'blue');
+                ctx.fillStyle.addColorStop(0.83, 'indigo');
+                ctx.fillStyle.addColorStop(1, 'violet');
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+            });
+            canvases.noteDisplays.forEach(display => {
+                display.style.background = 'radial-gradient(circle, rgba(255, 255, 255, 0.1), rgba(0,0,0,0.7))';
+                display.textContent = '';
+            });
+        }
+
+        function updateSoundWave(canvas, freq, color) {
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.beginPath();
+            ctx.strokeStyle = color;
+            ctx.lineWidth = 2;
+            const amplitude = canvas.height / 4;
+            const wavelength = canvas.width / (freq / 220);
+            for (let x = 0; x < canvas.width; x++) {
+                const y = canvas.height / 2 + amplitude * Math.sin((x / wavelength) * 2 * Math.PI);
+                x === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+            }
+            ctx.stroke();
+        }
+
+        function updateLightSpectrum(canvas, freq) {
+            const ctx = canvas.getContext('2d');
+            const grad = ctx.createLinearGradient(0, 0, canvas.width, 0);
+            grad.addColorStop(0, 'red');
+            grad.addColorStop(0.16, 'orange');
+            grad.addColorStop(0.33, 'yellow');
+            grad.addColorStop(0.5, 'green');
+            grad.addColorStop(0.66, 'blue');
+            grad.addColorStop(0.83, 'indigo');
+            grad.addColorStop(1, 'violet');
+            ctx.fillStyle = grad;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            const x = ((freq - 220) / (880 - 220)) * canvas.width;
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+            ctx.fillRect(x - 5, 0, 10, canvas.height);
+            ctx.fillStyle = '#000';
+            ctx.textAlign = 'center';
+            ctx.fillText(`${freq.toFixed(0)} Hz`, x, canvas.height / 2);
         }
 
         // Gradient interaction
@@ -281,7 +377,7 @@
                 if (oscillators.length) {
                     const freq = getFrequency();
                     oscillators[0].frequency.setValueAtTime(freq, audioCtx.currentTime);
-                    updateVisualizations(freq, getColorAtX(currentX));
+                    updateAllVisualizations(freq, getColorAtX(currentX));
                 }
             }
         }
@@ -311,13 +407,6 @@
             return `rgb(${imageData[0]}, ${imageData[1]}, ${imageData[2]})`;
         }
 
-        function updateDisplay(freq, color) {
-            const x = getPositionRatio();
-            const display = document.getElementById('display');
-            display.style.background = `radial-gradient(circle, ${color}, rgba(0,0,0,0.7))`;
-            display.textContent = mode === 'continuous' ? `${freq.toFixed(0)} Hz` : notes[Math.round(24 * x)];
-        }
-
         // Controls
         document.getElementById('toggleMode').addEventListener('click', () => {
             mode = mode === 'continuous' ? 'discrete' : 'continuous';
@@ -325,7 +414,7 @@
             if (isInteracting && oscillators.length) {
                 const freq = getFrequency();
                 oscillators[0].frequency.setValueAtTime(freq, audioCtx.currentTime);
-                updateVisualizations(freq, getColorAtX(currentX));
+                updateAllVisualizations(freq, getColorAtX(currentX));
             }
         });
 
@@ -382,7 +471,7 @@
                 { note: 'C4', dur: 400 }, { note: 'C4', dur: 400 }, { note: 'G4', dur: 400 }, { note: 'G4', dur: 400 },
                 { note: 'A4', dur: 400 }, { note: 'A4', dur: 400 }, { note: 'G4', dur: 800 },
                 { note: 'F4', dur: 400 }, { note: 'F4', dur: 400 }, { note: 'E4', dur: 400 }, { note: 'E4', dur: 400 },
-                { note: 'D4', dur: 400 }, { note: 'D4', dur: 400 }, { note: "C4", dur: 800 }
+                { note: 'D4', dur: 400 }, { note: 'D4', dur: 400 }, { note: 'C4', dur: 800 }
             ],
             ode: [
                 { note: 'E4', dur: 400 }, { note: 'E4', dur: 400 }, { note: 'F4', dur: 400 }, { note: 'G4', dur: 400 },
@@ -460,9 +549,8 @@
             songPlaying = true;
             const song = songs[document.getElementById('songSelect').value];
             let i = 0;
-            songInterval = setInterval(() => {
+            function playNextNote() {
                 if (i >= song.length) {
-                    clearInterval(songInterval);
                     stopTone();
                     songPlaying = false;
                     return;
@@ -472,12 +560,15 @@
                 currentX = (noteIdx / 24) * gradientCanvas.width;
                 const freq = 220 * Math.pow(2, noteIdx / 12);
                 playTone(freq);
-                setTimeout(stopTone, dur * 0.9);
-            }, 400); // Adjusted to match typical note duration
+                setTimeout(() => {
+                    stopTone();
+                    setTimeout(playNextNote, 50); // Small gap between notes
+                }, dur * 0.9);
+            }
+            playNextNote();
         });
 
         document.getElementById('stopSong').addEventListener('click', () => {
-            clearInterval(songInterval);
             stopTone();
             songPlaying = false;
         });
@@ -507,51 +598,6 @@
                 alert(error.message);
             }
         });
-
-        // Sound Wave Visualization
-        const soundWaveCanvas = document.getElementById('soundWaveCanvas');
-        soundWaveCanvas.width = gradientCanvas.width;
-        const soundWaveCtx = soundWaveCanvas.getContext('2d');
-
-        function updateSoundWave(freq, color) {
-            soundWaveCtx.clearRect(0, 0, soundWaveCanvas.width, soundWaveCanvas.height);
-            soundWaveCtx.beginPath();
-            soundWaveCtx.strokeStyle = color;
-            soundWaveCtx.lineWidth = 2;
-            const amplitude = soundWaveCanvas.height / 4;
-            const wavelength = soundWaveCanvas.width / (freq / 220);
-            for (let x = 0; x < soundWaveCanvas.width; x++) {
-                const y = soundWaveCanvas.height / 2 + amplitude * Math.sin((x / wavelength) * 2 * Math.PI);
-                x === 0 ? soundWaveCtx.moveTo(x, y) : soundWaveCtx.lineTo(x, y);
-            }
-            soundWaveCtx.stroke();
-        }
-
-        // Light Spectrum Visualization
-        const lightSpectrumCanvas = document.getElementById('lightSpectrumCanvas');
-        lightSpectrumCanvas.width = gradientCanvas.width;
-        const lightSpectrumCtx = lightSpectrumCanvas.getContext('2d');
-        const lightGradient = lightSpectrumCtx.createLinearGradient(0, 0, lightSpectrumCanvas.width, 0);
-        lightGradient.addColorStop(0, 'red');
-        lightGradient.addColorStop(0.16, 'orange');
-        lightGradient.addColorStop(0.33, 'yellow');
-        lightGradient.addColorStop(0.5, 'green');
-        lightGradient.addColorStop(0.66, 'blue');
-        lightGradient.addColorStop(0.83, 'indigo');
-        lightGradient.addColorStop(1, 'violet');
-        lightSpectrumCtx.fillStyle = lightGradient;
-        lightSpectrumCtx.fillRect(0, 0, lightSpectrumCanvas.width, lightSpectrumCanvas.height);
-
-        function updateLightSpectrum(freq, color) {
-            lightSpectrumCtx.fillStyle = lightGradient;
-            lightSpectrumCtx.fillRect(0, 0, lightSpectrumCanvas.width, lightSpectrumCanvas.height);
-            const x = ((freq - 220) / (880 - 220)) * lightSpectrumCanvas.width;
-            lightSpectrumCtx.fillStyle = 'rgba(255, 255, 255, 0.8)';
-            lightSpectrumCtx.fillRect(x - 5, 0, 10, lightSpectrumCanvas.height);
-            lightSpectrumCtx.fillStyle = '#000';
-            lightSpectrumCtx.textAlign = 'center';
-            lightSpectrumCtx.fillText(`${freq.toFixed(0)} Hz`, x, lightSpectrumCanvas.height / 2);
-        }
     </script>
 </body>
 </html>
