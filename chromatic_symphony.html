@@ -140,18 +140,7 @@
             <p>Let’s talk waves, my friend—because that’s where this all begins. Sound’s a vibration, a ripple through the air that tickles your ears. It’s measured in hertz (Hz)—beats per second. We humans catch anything from a deep 20 Hz rumble to a shrill 20,000 Hz squeak. In this space, I’ve zoomed in on 220 Hz to 880 Hz—low growls to bright chimes—because they feel alive and playable.</p>
             <p>Now, light? That’s a whole other beast—electromagnetic waves zipping at terahertz speeds (THz, a trillion hertz!). Red light’s down at 430 THz, slow and warm; violet’s up at 770 THz, fast and electric. They’re way too speedy to hear, but what if we slowed them down, mapped them to sound? That’s the trick here: I’ve tied the rainbow—red to violet—to that 220–880 Hz range, so every shade you see has a voice. It’s not science-fact exact—it’s art-science magic, inspired by synesthetes who hear colors in their heads. Cool, right?</p>
         </section>
-        <section class="section">
-            <h2>Paint with Sound</h2>
-            <canvas id="gradientCanvas"></canvas>
-            <div id="noteDisplayPaint" class="noteDisplay"></div>
-            <canvas id="soundWaveCanvasPaint" class="soundWaveCanvas"></canvas>
-            <canvas id="lightSpectrumCanvasPaint" class="lightSpectrumCanvas"></canvas>
-            <div class="controls">
-                <button id="toggleMode">Discrete Mode</button>
-                <button id="stopTone">Stop Tone</button>
-            </div>
-            <p>Grab this gradient and paint with your ears! Drag across it—red’s a low 220 Hz growl, violet’s a high 880 Hz chime. Toggle to "Discrete Mode" to snap to notes like A3 to A5, perfect for melody vibes. The display glows with your color and hums its frequency or note. Hit "Stop Tone" when you’re ready to hush it. It’s your sonic palette—go wild!</p>
-        </section>
+
         <section class="section">
             <h2>Sound Waves in Motion</h2>
             <canvas id="soundWaveCanvasMain" class="soundWaveCanvas"></canvas>
@@ -164,7 +153,18 @@
             <p>Here’s the rainbow laid bare! This canvas maps colors to their secret frequencies—red at 430 THz on the left, violet at 770 THz on the right. As you play tones below, a marker slides along, linking each sound to its color twin. It’s a peek into how light and sound can hold hands, even across their cosmic scales.</p>
         </section>
 
-
+        <section class="section">
+            <h2>Paint with Sound</h2>
+            <canvas id="gradientCanvas"></canvas>
+            <div id="noteDisplayPaint" class="noteDisplay"></div>
+            <canvas id="soundWaveCanvasPaint" class="soundWaveCanvas"></canvas>
+            <canvas id="lightSpectrumCanvasPaint" class="lightSpectrumCanvas"></canvas>
+            <div class="controls">
+                <button id="toggleMode">Discrete Mode</button>
+                <button id="stopTone">Stop Tone</button>
+            </div>
+            <p>Grab this gradient and paint with your ears! Drag across it—red’s a low 220 Hz growl, violet’s a high 880 Hz chime. Toggle to "Discrete Mode" to snap to notes like A3 to A5, perfect for melody vibes. The display glows with your color and hums its frequency or note. Hit "Stop Tone" when you’re ready to hush it. It’s your sonic palette—go wild!</p>
+        </section>
 
         <section class="section">
             <h2>Tickle the Color Piano</h2>
@@ -216,7 +216,7 @@
 
         // State
         const notes = ['A3', 'A#3', 'B3', 'C4', 'C#4', 'D4', 'D#4', 'E4', 'F4', 'F#4', 'G4', 'G#4', 'A4', 'A#4', 'B4', 'C5', 'C#5', 'D5', 'D#5', 'E5', 'F5', 'F#5', 'G5', 'G#5', 'A5'];
-        let isInteracting = false, currentX = 0, mode = 'continuous', songPlaying = false, songInterval;
+        let isInteracting = false, currentX = 0, mode = 'continuous', songPlaying = false;
 
         // Audio setup
         const audioCtx = new AudioContext();
@@ -305,14 +305,15 @@
             });
             canvases.lightSpectrum.forEach(canvas => {
                 const ctx = canvas.getContext('2d');
-                ctx.fillStyle = ctx.createLinearGradient(0, 0, canvas.width, 0);
-                ctx.fillStyle.addColorStop(0, 'red');
-                ctx.fillStyle.addColorStop(0.16, 'orange');
-                ctx.fillStyle.addColorStop(0.33, 'yellow');
-                ctx.fillStyle.addColorStop(0.5, 'green');
-                ctx.fillStyle.addColorStop(0.66, 'blue');
-                ctx.fillStyle.addColorStop(0.83, 'indigo');
-                ctx.fillStyle.addColorStop(1, 'violet');
+                const grad = ctx.createLinearGradient(0, 0, canvas.width, 0);
+                grad.addColorStop(0, 'red');
+                grad.addColorStop(0.16, 'orange');
+                grad.addColorStop(0.33, 'yellow');
+                grad.addColorStop(0.5, 'green');
+                grad.addColorStop(0.66, 'blue');
+                grad.addColorStop(0.83, 'indigo');
+                grad.addColorStop(1, 'violet');
+                ctx.fillStyle = grad;
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
             });
             canvases.noteDisplays.forEach(display => {
@@ -348,7 +349,13 @@
             grad.addColorStop(1, 'violet');
             ctx.fillStyle = grad;
             ctx.fillRect(0, 0, canvas.width, canvas.height);
-            const x = ((freq - 220) / (880 - 220)) * canvas.width;
+            // Logarithmic mapping to match gradientCanvas
+            const minFreq = 220;
+            const maxFreq = 880;
+            const logMin = Math.log2(minFreq);
+            const logMax = Math.log2(maxFreq);
+            const logFreq = Math.log2(freq);
+            const x = canvas.width * (logFreq - logMin) / (logMax - logMin);
             ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
             ctx.fillRect(x - 5, 0, 10, canvas.height);
             ctx.fillStyle = '#000';
@@ -421,7 +428,6 @@
         document.getElementById('stopTone').addEventListener('click', () => {
             stopTone();
             isInteracting = false;
-            clearInterval(songInterval);
             songPlaying = false;
         });
 
@@ -550,7 +556,7 @@
             const song = songs[document.getElementById('songSelect').value];
             let i = 0;
             function playNextNote() {
-                if (i >= song.length) {
+                if (i >= song.length || !songPlaying) {
                     stopTone();
                     songPlaying = false;
                     return;
@@ -562,7 +568,7 @@
                 playTone(freq);
                 setTimeout(() => {
                     stopTone();
-                    setTimeout(playNextNote, 50); // Small gap between notes
+                    setTimeout(playNextNote, 50);
                 }, dur * 0.9);
             }
             playNextNote();
