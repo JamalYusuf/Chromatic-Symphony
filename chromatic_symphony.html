@@ -300,6 +300,19 @@
                 and see your colors sing! Use notes from A3 to A5 (e.g., C4, D#4, G5) and durations like 400 or 800.
                 Unleash your inner composer!</p>
         </section>
+        <section class="section">
+            <h2>Sing Your Colors</h2>
+            <p>Let your voice paint the canvas! Turn on your microphone and sing, hum, or play an instrument. The dominant frequency of your sound—between 220 Hz and 880 Hz—will light up as a color on the spectrum, from deep red to vibrant violet. Watch the waveform dance and see the light spectrum glow in real-time. Hit "Toggle Mic" to start or stop the magic!</p>
+            <div class="controls">
+                <button id="toggleMic">Toggle Mic</button>
+            </div>
+            <div class="visual-label">Current Note</div>
+            <div id="noteDisplayMic" class="noteDisplay"></div>
+            <div class="visual-label">Sound Wave Visualizer</div>
+            <canvas id="soundWaveCanvasMic" class="soundWaveCanvas"></canvas>
+            <div class="visual-label">Light Spectrum Visualizer</div>
+            <canvas id="lightSpectrumCanvasMic" class="lightSpectrumCanvas"></canvas>
+        </section>
     </main>
     <footer>
         <p>© Built by Jamal Yusuf</p>
@@ -410,18 +423,21 @@
                         document.getElementById('soundWaveCanvasMain'),
                         document.getElementById('soundWaveCanvasPaint'),
                         document.getElementById('soundWaveCanvasPiano'),
-                        document.getElementById('soundWaveCanvasSongs')
+                        document.getElementById('soundWaveCanvasSongs'),
+                        document.getElementById('soundWaveCanvasMic')
                     ],
                     lightSpectrum: [
                         document.getElementById('lightSpectrumCanvasMain'),
                         document.getElementById('lightSpectrumCanvasPaint'),
                         document.getElementById('lightSpectrumCanvasPiano'),
-                        document.getElementById('lightSpectrumCanvasSongs')
+                        document.getElementById('lightSpectrumCanvasSongs'),
+                        document.getElementById('lightSpectrumCanvasMic')
                     ],
                     noteDisplays: [
                         document.getElementById('noteDisplayPaint'),
                         document.getElementById('noteDisplayPiano'),
-                        document.getElementById('noteDisplaySongs')
+                        document.getElementById('noteDisplaySongs'),
+                        document.getElementById('noteDisplayMic')
                     ]
                 };
             }
@@ -564,8 +580,25 @@
                 return `rgb(${imageData[0]}, ${imageData[1]}, ${imageData[2]})`;
             }
 
+            updateMicVisuals(freq, color, mode) {
+                const noteText = mode === 'continuous' ? `${freq.toFixed(0)} Hz` : CONFIG.NOTES[Math.round((CONFIG.NOTES.length - 1) * (state.currentX / this.gradientCanvas.width))];
+                const soundWaveCanvas = document.getElementById('soundWaveCanvasMic');
+                const lightSpectrumCanvas = document.getElementById('lightSpectrumCanvasMic');
+                const noteDisplay = document.getElementById('noteDisplayMic');
+
+                if (soundWaveCanvas) {
+                    this.updateSoundWave(soundWaveCanvas, freq, color);
+                }
+                if (lightSpectrumCanvas) {
+                    this.updateLightSpectrum(lightSpectrumCanvas, freq);
+                }
+                if (noteDisplay) {
+                    noteDisplay.style.background = `radial-gradient(circle, ${color}, rgba(0,0,0,0.7))`;
+                    noteDisplay.textContent = noteText;
+                }
+            }
+
             attachPianoEvents() {
-                // Remove existing listeners to prevent duplicates
                 this.pianoCanvas.removeEventListener('mousedown', this.handlePianoMouseDown);
                 this.pianoCanvas.removeEventListener('mousemove', this.handlePianoMouseMove);
                 this.pianoCanvas.removeEventListener('mouseout', this.handlePianoMouseOut);
@@ -574,7 +607,6 @@
                 this.pianoCanvas.removeEventListener('touchmove', this.handlePianoTouchMove);
                 this.pianoCanvas.removeEventListener('touchend', this.handlePianoTouchEnd);
 
-                // Define handlers
                 const getKeyIndex = (e) => {
                     const rect = this.pianoCanvas.getBoundingClientRect();
                     const clientX = e.touches ? e.touches[0].clientX : e.clientX;
@@ -651,7 +683,6 @@
                     this.drawPiano();
                 };
 
-                // Attach listeners
                 this.pianoCanvas.addEventListener('mousedown', this.handlePianoMouseDown);
                 this.pianoCanvas.addEventListener('mousemove', this.handlePianoMouseMove);
                 this.pianoCanvas.addEventListener('mouseout', this.handlePianoMouseOut);
@@ -709,14 +740,12 @@
                         { note: 'D4', dur: 400 }, { note: 'D4', dur: 400 }, { note: 'E4', dur: 400 }, { note: 'D4', dur: 400 },
                         { note: 'D4', dur: 800 }
                     ],
-
                     maryHadALittleLamb: [
                         { note: 'E4', dur: 400 }, { note: 'D4', dur: 400 }, { note: 'C4', dur: 400 }, { note: 'D4', dur: 400 },
                         { note: 'E4', dur: 400 }, { note: 'E4', dur: 400 }, { note: 'E4', dur: 800 },
                         { note: 'D4', dur: 400 }, { note: 'D4', dur: 400 }, { note: 'E4', dur: 400 }, { note: 'D4', dur: 400 },
                         { note: 'C4', dur: 400 }
                     ],
-
                     theEntertainer: [
                         { note: 'C4', dur: 400 }, { note: 'E4', dur: 400 }, { note: 'G4', dur: 400 }, { note: 'C5', dur: 400 },
                         { note: 'E5', dur: 400 }, { note: 'G5', dur: 400 }, { note: 'C6', dur: 400 }, { note: 'E6', dur: 400 },
@@ -742,7 +771,7 @@
                     ode: [
                         { note: 'E4', dur: 400 }, { note: 'E4', dur: 400 }, { note: 'F4', dur: 400 }, { note: 'G4', dur: 400 },
                         { note: 'G4', dur: 400 }, { note: 'F4', dur: 400 }, { note: 'E4', dur: 400 }, { note: 'D4', dur: 400 },
-                        { note: 'C4', dur: 400 }, { note: 'C4', dur: 400 }, { note: 'D4', dur: 400 }, { note: 'E4', dur: 400 },
+                        { note: 'C4', dur: 400 }, { note: 'C4', dur: 400 }, { note: 'D4 -webkit-box-sizing: border-box; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); font-family: Orbitron, sans-serif; font-size: 16px; font-weight: 400; line-height: 28.8px; text-align: start;">D4', dur: 400 }, { note: 'E4', dur: 400 },
                         { note: 'E4', dur: 600 }, { note: 'D4', dur: 200 }, { note: 'D4', dur: 800 }
                     ],
                     mary: [
@@ -827,11 +856,143 @@
             }
         }
 
+        // Microphone handling
+        class MicManager {
+            constructor(audioManager, visualizer) {
+                this.audioCtx = audioManager.audioCtx;
+                this.analyser = this.audioCtx.createAnalyser();
+                this.analyser.fftSize = 2048;
+                this.dataArray = new Float32Array(this.analyser.frequencyBinCount);
+                this.stream = null;
+                this.source = null;
+                this.isActive = false;
+                this.visualizer = visualizer;
+                this.mode = state.mode;
+                this.frequencyBuffer = []; // Store frequencies for averaging
+                this.bufferInterval = null; // Interval for averaging
+            }
+
+            async startMic() {
+                try {
+                    this.stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                    this.source = this.audioCtx.createMediaStreamSource(this.stream);
+                    this.source.connect(this.analyser);
+                    this.isActive = true;
+                    this.frequencyBuffer = [];
+                    this.analyze();
+                    // Start 1-second interval for averaging
+                    this.bufferInterval = setInterval(() => this.processAverage(), 1000);
+                } catch (err) {
+                    alert('Microphone access denied or unavailable: ' + err.message);
+                }
+            }
+
+            stopMic() {
+                if (this.stream) {
+                    this.stream.getTracks().forEach(track => track.stop());
+                    this.stream = null;
+                }
+                if (this.source) {
+                    this.source.disconnect();
+                    this.source = null;
+                }
+                this.isActive = false;
+                if (this.bufferInterval) {
+                    clearInterval(this.bufferInterval);
+                    this.bufferInterval = null;
+                }
+                this.frequencyBuffer = [];
+                this.visualizer.canvases.noteDisplays[3].textContent = '';
+                this.visualizer.canvases.noteDisplays[3].style.background = 'radial-gradient(circle, rgba(255, 255, 255, 0.1), rgba(0, 0, 0, 0.7))';
+                this.clearCanvases();
+            }
+
+            clearCanvases() {
+                const soundWaveCanvas = document.getElementById('soundWaveCanvasMic');
+                const lightSpectrumCanvas = document.getElementById('lightSpectrumCanvasMic');
+                if (soundWaveCanvas) {
+                    const ctx = soundWaveCanvas.getContext('2d');
+                    ctx.clearRect(0, 0, soundWaveCanvas.width, soundWaveCanvas.height);
+                }
+                if (lightSpectrumCanvas) {
+                    this.visualizer.drawLightSpectrumBackground(lightSpectrumCanvas);
+                }
+            }
+
+            analyze() {
+                if (!this.isActive) return;
+
+                this.analyser.getFloatTimeDomainData(this.dataArray);
+
+                let maxCorrelation = 0;
+                let bestLag = 0;
+                const sampleRate = this.audioCtx.sampleRate;
+                const minFreq = CONFIG.MIN_FREQ;
+                const maxFreq = CONFIG.MAX_FREQ;
+                const minLag = Math.floor(sampleRate / maxFreq);
+                const maxLag = Math.floor(sampleRate / minFreq);
+
+                for (let lag = minLag; lag <= maxLag; lag++) {
+                    let correlation = 0;
+                    for (let i = 0; i < this.dataArray.length - lag; i++) {
+                        correlation += this.dataArray[i] * this.dataArray[i + lag];
+                    }
+                    if (correlation > maxCorrelation) {
+                        maxCorrelation = correlation;
+                        bestLag = lag;
+                    }
+                }
+
+                let freq = bestLag ? sampleRate / bestLag : 0;
+
+                if (freq >= minFreq && freq <= maxFreq) {
+                    this.frequencyBuffer.push(freq);
+                }
+
+                requestAnimationFrame(() => this.analyze());
+            }
+
+            processAverage() {
+                if (!this.isActive || this.frequencyBuffer.length === 0) {
+                    this.clearCanvases();
+                    this.visualizer.canvases.noteDisplays[3].textContent = '';
+                    this.visualizer.canvases.noteDisplays[3].style.background = 'radial-gradient(circle, rgba(255, 255, 255, 0.1), rgba(0, 0, 0, 0.7))';
+                    this.frequencyBuffer = [];
+                    return;
+                }
+
+                // Calculate average frequency
+                const sum = this.frequencyBuffer.reduce((a, b) => a + b, 0);
+                let avgFreq = sum / this.frequencyBuffer.length;
+
+                // Map frequency to gradient position
+                const logMin = Math.log2(CONFIG.MIN_FREQ);
+                const logMax = Math.log2(CONFIG.MAX_FREQ);
+                const logFreq = Math.log2(avgFreq);
+                const ratio = (logFreq - logMin) / (logMax - logMin);
+                state.currentX = ratio * this.visualizer.gradientCanvas.width;
+
+                // Snap to discrete notes if in discrete mode
+                if (this.mode === 'discrete') {
+                    const noteIndex = Math.round(ratio * (CONFIG.NOTES.length - 1));
+                    avgFreq = CONFIG.MIN_FREQ * Math.pow(2, noteIndex / 12);
+                    state.currentX = (noteIndex / (CONFIG.NOTES.length - 1)) * this.visualizer.gradientCanvas.width;
+                }
+
+                const color = this.visualizer.getColorAtX(state.currentX);
+                this.visualizer.updateMicVisuals(avgFreq, color, this.mode);
+
+                // Clear buffer for next interval
+                this.frequencyBuffer = [];
+            }
+        }
+
         // Initialize
         const state = new AppState();
         const audio = new AudioManager();
         const viz = new Visualizer();
         const songs = new SongManager();
+        const mic = new MicManager(audio, viz);
 
         function getFrequency(x, mode) {
             const ratio = x / viz.gradientCanvas.width;
@@ -884,10 +1045,15 @@
         document.getElementById('toggleMode').addEventListener('click', () => {
             state.toggleMode();
             document.getElementById('toggleMode').textContent = `${state.mode === 'continuous' ? 'Discrete' : 'Continuous'} Mode`;
+            mic.mode = state.mode;
             if (state.lastFreq && state.lastColor) {
                 const freq = getFrequency(state.currentX, state.mode);
                 state.lastFreq = freq;
                 viz.updateAll(state.lastFreq, state.lastColor, state.mode);
+            }
+            // If mic is active, force an immediate update with current buffer
+            if (mic.isActive) {
+                mic.processAverage();
             }
         });
 
@@ -899,7 +1065,6 @@
             viz.drawPiano();
         });
 
-        // Song controls
         document.getElementById('playSong').addEventListener('click', () => {
             if (state.songPlaying) return;
             state.songPlaying = true;
@@ -944,6 +1109,17 @@
             }
         });
 
+        document.getElementById('toggleMic').addEventListener('click', () => {
+            if (mic.isActive) {
+                mic.stopMic();
+                document.getElementById('toggleMic').textContent = 'Toggle Mic';
+            } else {
+                mic.mode = state.mode;
+                mic.startMic();
+                document.getElementById('toggleMic').textContent = 'Stop Mic';
+            }
+        });
+
         // Monitor DOM changes
         const observer = new MutationObserver((mutations) => {
             mutations.forEach(mutation => {
@@ -955,8 +1131,6 @@
             });
         });
         observer.observe(document.querySelector('main'), { childList: true, subtree: true });
-
-
     </script>
 </body>
 

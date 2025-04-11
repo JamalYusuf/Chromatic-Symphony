@@ -1,5 +1,6 @@
 # Chromatic Symphony
 [Click here to experience the visualization](https://html-preview.github.io/?url=https://github.com/JamalYusuf/Chromatic-Symphony/blob/main/chromatic_symphony.html)
+
 **Chromatic Symphony** is an interactive web application that blends music and color in a synesthetic experience, allowing users to explore the interplay of sound and visuals through a digital canvas. Built as a love letter to synesthesia, it lets users paint with sound, play a colorful piano, and compose melodies that bloom into vibrant visualizations. Crafted with a sci-fi aesthetic, it draws inspiration from retro Winamp visualizers and generative art, offering a playground for creativity.
 
 This README is designed for developers interested in understanding, running, contributing to, or extending the project.
