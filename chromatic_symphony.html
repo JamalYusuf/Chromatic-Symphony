@@ -5,14 +5,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chromatic Symphony</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@400;500&display=swap"
+        rel="stylesheet">
     <style>
+        :root {
+            --primary-color: #00ffcc;
+            --accent-color: #ff00cc;
+            --bg-dark: #0a0a0a;
+            --bg-light: rgba(255, 255, 255, 0.05);
+            --text-color: #f5f5f5;
+            --shadow-color: rgba(0, 255, 204, 0.5);
+        }
+
         body {
             margin: 0;
             padding: 0;
             font-family: 'Roboto', sans-serif;
-            background: radial-gradient(circle at center, #0a0a0a, #1a1a1a);
-            color: #f5f5f5;
-            overflow-y: auto;
+            background: radial-gradient(circle at center, var(--bg-dark), #1a1a1a);
+            color: var(--text-color);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
@@ -22,14 +32,14 @@
             text-align: center;
             padding: 40px;
             background: linear-gradient(to bottom, rgba(0, 0, 0, 0.95), rgba(0, 0, 0, 0.85));
-            border-bottom: 2px solid #00ffcc;
+            border-bottom: 2px solid var(--primary-color);
         }
 
         h1 {
             font-family: 'Orbitron', sans-serif;
             font-size: 3.5em;
-            color: #00ffcc;
-            text-shadow: 0 0 15px #00ffcc, 0 0 30px #ff00cc;
+            color: var(--primary-color);
+            text-shadow: 0 0 15px var(--primary-color), 0 0 30px var(--accent-color);
             margin: 0;
         }
 
@@ -41,7 +51,7 @@
         }
 
         .section {
-            background: rgba(255, 255, 255, 0.05);
+            background: var(--bg-light);
             border-radius: 25px;
             padding: 30px;
             margin: 30px 0;
@@ -55,13 +65,17 @@
             transform: translateY(-5px);
         }
 
-        h2 {
+        h2,
+        h3 {
             font-family: 'Orbitron', sans-serif;
-            color: #00ffcc;
-            text-shadow: 0 0 10px #00ffcc;
+            color: var(--primary-color);
+            text-shadow: 0 0 10px var(--primary-color);
             font-size: 2em;
             margin-top: 0;
-            font-weight: 700;
+        }
+
+        h3 {
+            font-size: 1.5em;
         }
 
         canvas {
@@ -95,14 +109,13 @@
             line-height: 100px;
             border-radius: 20px;
             background: radial-gradient(circle, rgba(255, 255, 255, 0.1), rgba(0, 0, 0, 0.7));
-            box-shadow: inset 0 0 25px rgba(0, 0, 0, 0.8), 0 0 15px rgba(0, 255, 204, 0.3);
+            box-shadow: inset 0 0 25px rgba(0, 0, 0, 0.8), 0 0 15px var(--shadow-color);
         }
 
         .controls {
             display: flex;
             gap: 25px;
             flex-wrap: wrap;
-            justify-content: left;
             margin-top: 20px;
         }
 
@@ -113,7 +126,7 @@
             padding: 15px 35px;
             border: none;
             border-radius: 35px;
-            background: linear-gradient(45deg, #ff00cc, #00ffcc);
+            background: linear-gradient(45deg, var(--accent-color), var(--primary-color));
             color: #fff;
             font-size: 1.2em;
             font-family: 'Orbitron', sans-serif;
@@ -128,12 +141,11 @@
         textarea:hover {
             transform: scale(1.08);
             box-shadow: 0 8px 20px rgba(255, 0, 204, 0.8);
-            background: linear-gradient(45deg, #ff33cc, #33ffcc);
         }
 
-        select {
+        select,
+        textarea {
             background: linear-gradient(45deg, #444, #666);
-            padding: 15px 25px;
         }
 
         input {
@@ -146,16 +158,11 @@
             max-width: 650px;
             height: 120px;
             resize: none;
-            background: linear-gradient(45deg, #444, #666);
-            border: 2px solid rgba(255, 255, 255, 0.25);
-            color: #fff;
-            font-size: 1.1em;
         }
 
         p {
             line-height: 1.8;
             font-size: 1.2em;
-            color: #f0f0f0;
         }
 
         footer {
@@ -164,21 +171,17 @@
             background: linear-gradient(to top, rgba(0, 0, 0, 0.95), rgba(0, 0, 0, 0.85));
             font-size: 1.1em;
             color: #ccc;
-            border-top: 2px solid #00ffcc;
+            border-top: 2px solid var(--primary-color);
         }
 
         .visual-label {
             font-family: 'Orbitron', sans-serif;
             font-size: 1.4em;
-            color: #f5f5f5;
-            text-shadow: 0 0 8px rgba(0, 255, 204, 0.5);
-            margin-top: 30px;
-            margin-bottom: 10px;
-            text-align: left;
+            color: var(--text-color);
+            text-shadow: 0 0 8px var(--shadow-color);
+            margin: 30px 0 10px;
         }
     </style>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Roboto:wght@400;500&display=swap"
-        rel="stylesheet">
 </head>
 
 <body>
@@ -198,7 +201,6 @@
                 those trippy old Winamp visualizers and the organic chaos of generative art. Ready to dive in and let
                 your imagination run wild?</p>
         </section>
-
         <section class="section">
             <h2>The Magic of Sound and Light</h2>
             <img src="img/graphic2.jpg" style="display: block; width: 40%;" alt="">
@@ -217,7 +219,6 @@
                 a voice. It’s not science-fact exact—it’s art-science magic, inspired by synesthetes who hear colors in
                 their heads. Cool, right?</p>
         </section>
-
         <section class="section">
             <h2>Paint with Sound</h2>
             <p>Grab this gradient and paint with your ears! Drag across it—red’s a low 220 Hz growl, violet’s a high 880
@@ -232,13 +233,10 @@
                 <button id="toggleMode">Discrete Mode</button>
                 <button id="stopTone">Stop Tone</button>
             </div>
-            </br>
-
             <div class="visual-label">Sound Wave Visualizer</div>
             <canvas id="soundWaveCanvasPaint" class="soundWaveCanvas"></canvas>
             <div class="visual-label">Light Spectrum Visualizer</div>
             <canvas id="lightSpectrumCanvasPaint" class="lightSpectrumCanvas"></canvas>
-
         </section>
         <section class="section">
             <h2>Sound Waves in Motion</h2>
@@ -249,7 +247,6 @@
                 Hz) zip tight and fast. It’s like seeing the heartbeat of what you hear, a visual pulse for your sonic
                 brushstrokes.</p>
         </section>
-
         <section class="section">
             <h2>The Light Spectrum Unveiled</h2>
             <div class="visual-label">Light Spectrum Visualizer</div>
@@ -259,7 +256,6 @@
                 to its color twin. It’s a peek into how light and sound can hold hands, even across their cosmic scales.
             </p>
         </section>
-
         <section class="section">
             <h2>Tickle the Color Piano</h2>
             <p>This isn’t just a piano—it’s a rainbow you can play! Each key from A3 to A5 is splashed with a hue from
@@ -274,9 +270,7 @@
             <canvas id="soundWaveCanvasPiano" class="soundWaveCanvas"></canvas>
             <div class="visual-label">Light Spectrum Visualizer</div>
             <canvas id="lightSpectrumCanvasPiano" class="lightSpectrumCanvas"></canvas>
-
         </section>
-
         <section class="section">
             <h2>Songs in Color</h2>
             <div class="controls">
@@ -295,7 +289,7 @@
                 color. Hit "Play" to let them sing, "Stop" to hush them. It’s like watching a musical painting
                 unfold—timeless tunes turned into vibrant strokes of light and sound.</p>
             <h3>Create Your Own Melody</h3>
-            <input type="text" id="melodyName" placeholder="Name Your Melody"></br></br>
+            <input type="text" id="melodyName" placeholder="Name Your Melody"><br><br>
             <textarea id="melodyInput"
                 placeholder="e.g., C4 400, D4 400, E4 800 (note duration, separate by commas)"></textarea>
             <div class="controls">
@@ -311,114 +305,157 @@
         <p>© Built by Jamal Yusuf</p>
     </footer>
     <script>
-        // Gradient setup
-        const gradientCanvas = document.getElementById('gradientCanvas');
-        gradientCanvas.width = Math.min(1000, window.innerWidth * 0.8);
-        const ctx = gradientCanvas.getContext('2d');
-        const gradient = ctx.createLinearGradient(0, 0, gradientCanvas.width, 0);
-        gradient.addColorStop(0, 'red');
-        gradient.addColorStop(0.16, 'orange');
-        gradient.addColorStop(0.33, 'yellow');
-        gradient.addColorStop(0.5, 'green');
-        gradient.addColorStop(0.66, 'blue');
-        gradient.addColorStop(0.83, 'indigo');
-        gradient.addColorStop(1, 'violet');
-        ctx.fillStyle = gradient;
-        ctx.fillRect(0, 0, gradientCanvas.width, gradientCanvas.height);
-
-        // State
-        const notes = ['A3', 'A#3', 'B3', 'C4', 'C#4', 'D4', 'D#4', 'E4', 'F4', 'F#4', 'G4', 'G#4', 'A4', 'A#4', 'B4', 'C5', 'C#5', 'D5', 'D#5', 'E5', 'F5', 'F#5', 'G5', 'G#5', 'A5'];
-        let isInteracting = false, currentX = 0, mode = 'continuous', songPlaying = false;
-        let lastFreq = null, lastColor = null; // Store last played note's state
-
-        // Audio setup
-        const audioCtx = new AudioContext();
-        let oscillators = [], gainNode = audioCtx.createGain();
-        gainNode.connect(audioCtx.destination);
-        gainNode.gain.value = 0.4;
-
-        function playTone(freq) {
-            stopTone();
-            const osc1 = audioCtx.createOscillator();
-            const osc2 = audioCtx.createOscillator();
-            osc1.type = 'triangle';
-            osc2.type = 'sine';
-            osc1.frequency.value = freq;
-            osc2.frequency.value = freq * 1.02;
-            const filter = audioCtx.createBiquadFilter();
-            filter.type = 'lowpass';
-            filter.frequency.value = 2000;
-            osc1.connect(filter);
-            osc2.connect(filter);
-            filter.connect(gainNode);
-            osc1.start();
-            osc2.start();
-            oscillators = [osc1, osc2];
-            lastFreq = freq;
-            lastColor = getColorAtX(currentX);
-            updateAllVisualizations(lastFreq, lastColor);
-        }
-
-        function stopTone() {
-            oscillators.forEach(osc => osc.stop());
-            oscillators = [];
-            // Do not clear visualizations here; retain last state
-        }
-
-        // Visualization setup
-        const canvases = {
-            soundWave: [
-                document.getElementById('soundWaveCanvasMain'),
-                document.getElementById('soundWaveCanvasPaint'),
-                document.getElementById('soundWaveCanvasPiano'),
-                document.getElementById('soundWaveCanvasSongs')
-            ],
-            lightSpectrum: [
-                document.getElementById('lightSpectrumCanvasMain'),
-                document.getElementById('lightSpectrumCanvasPaint'),
-                document.getElementById('lightSpectrumCanvasPiano'),
-                document.getElementById('lightSpectrumCanvasSongs')
-            ],
-            noteDisplays: [
-                document.getElementById('noteDisplayPaint'),
-                document.getElementById('noteDisplayPiano'),
-                document.getElementById('noteDisplaySongs')
-            ]
+        // Configuration
+        const CONFIG = {
+            NOTES: ['A3', 'A#3', 'B3', 'C4', 'C#4', 'D4', 'D#4', 'E4', 'F4', 'F#4', 'G4', 'G#4', 'A4', 'A#4', 'B4', 'C5', 'C#5', 'D5', 'D#5', 'E5', 'F5', 'F#5', 'G5', 'G#5', 'A5'],
+            MIN_FREQ: 220,
+            MAX_FREQ: 880,
+            CANVAS_WIDTH: Math.min(1000, window.innerWidth * 0.8),
+            GAIN_VALUE: 0.4
         };
 
-        canvases.soundWave.forEach(canvas => canvas.width = gradientCanvas.width);
-        canvases.lightSpectrum.forEach(canvas => {
-            canvas.width = gradientCanvas.width;
-            const ctx = canvas.getContext('2d');
-            const grad = ctx.createLinearGradient(0, 0, canvas.width, 0);
-            grad.addColorStop(0, 'red');
-            grad.addColorStop(0.16, 'orange');
-            grad.addColorStop(0.33, 'yellow');
-            grad.addColorStop(0.5, 'green');
-            grad.addColorStop(0.66, 'blue');
-            grad.addColorStop(0.83, 'indigo');
-            grad.addColorStop(1, 'violet');
-            ctx.fillStyle = grad;
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-        });
+        // State management
+        class AppState {
+            constructor() {
+                this.isInteracting = false;
+                this.currentX = 0;
+                this.mode = 'continuous';
+                this.songPlaying = false;
+                this.lastFreq = null;
+                this.lastColor = null;
+                this.pressedKeyIndex = null;
+                this.hoveredKeyIndex = null;
+            }
 
-        function updateAllVisualizations(freq, color) {
-            const x = getPositionRatio();
-            const noteText = mode === 'continuous' ? `${freq.toFixed(0)} Hz` : notes[Math.round(24 * x)];
-            canvases.soundWave.forEach(canvas => updateSoundWave(canvas, freq, color));
-            canvases.lightSpectrum.forEach(canvas => updateLightSpectrum(canvas, freq));
-            canvases.noteDisplays.forEach(display => {
-                display.style.background = `radial-gradient(circle, ${color}, rgba(0,0,0,0.7))`;
-                display.textContent = noteText;
-            });
+            updatePosition(x, canvasWidth) {
+                this.currentX = Math.max(0, Math.min(x, canvasWidth));
+            }
+
+            toggleMode() {
+                this.mode = this.mode === 'continuous' ? 'discrete' : 'continuous';
+            }
+
+            setPressedKey(index) {
+                this.pressedKeyIndex = index;
+            }
+
+            clearPressedKey() {
+                this.pressedKeyIndex = null;
+            }
+
+            setHoveredKey(index) {
+                this.hoveredKeyIndex = index;
+            }
+
+            clearHoveredKey() {
+                this.hoveredKeyIndex = null;
+            }
         }
 
-        function clearAllVisualizations() {
-            canvases.soundWave.forEach(canvas => {
-                const ctx = canvas.getContext('2d');
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-            });
-            canvases.lightSpectrum.forEach(canvas => {
+        // Audio handling
+        class AudioManager {
+            constructor() {
+                this.audioCtx = new AudioContext();
+                this.oscillators = [];
+                this.gainNode = this.audioCtx.createGain();
+                this.gainNode.connect(this.audioCtx.destination);
+                this.gainNode.gain.value = CONFIG.GAIN_VALUE;
+            }
+
+            playTone(freq) {
+                this.stopTone();
+                const osc1 = this.audioCtx.createOscillator();
+                const osc2 = this.audioCtx.createOscillator();
+                osc1.type = 'triangle';
+                osc2.type = 'sine';
+                osc1.frequency.value = freq;
+                osc2.frequency.value = freq * 1.02;
+                const filter = this.audioCtx.createBiquadFilter();
+                filter.type = 'lowpass';
+                filter.frequency.value = 2000;
+                osc1.connect(filter);
+                osc2.connect(filter);
+                filter.connect(this.gainNode);
+                osc1.start();
+                osc2.start();
+                this.oscillators = [osc1, osc2];
+            }
+
+            stopTone() {
+                this.oscillators.forEach(osc => osc.stop());
+                this.oscillators = [];
+            }
+        }
+
+        // Visualization handling
+        class Visualizer {
+            constructor() {
+                this.initializeElements();
+                this.setupGradient();
+                this.setupCanvases();
+                this.drawPiano();
+                this.attachPianoEvents();
+                this.attachGradientEvents();
+            }
+
+            initializeElements() {
+                this.gradientCanvas = document.getElementById('gradientCanvas');
+                this.gradientCanvas.width = CONFIG.CANVAS_WIDTH;
+                this.ctx = this.gradientCanvas.getContext('2d');
+                this.pianoCanvas = document.getElementById('pianoCanvas');
+                this.pianoCanvas.width = CONFIG.CANVAS_WIDTH;
+                this.pianoCtx = this.pianoCanvas.getContext('2d');
+                this.canvases = {
+                    soundWave: [
+                        document.getElementById('soundWaveCanvasMain'),
+                        document.getElementById('soundWaveCanvasPaint'),
+                        document.getElementById('soundWaveCanvasPiano'),
+                        document.getElementById('soundWaveCanvasSongs')
+                    ],
+                    lightSpectrum: [
+                        document.getElementById('lightSpectrumCanvasMain'),
+                        document.getElementById('lightSpectrumCanvasPaint'),
+                        document.getElementById('lightSpectrumCanvasPiano'),
+                        document.getElementById('lightSpectrumCanvasSongs')
+                    ],
+                    noteDisplays: [
+                        document.getElementById('noteDisplayPaint'),
+                        document.getElementById('noteDisplayPiano'),
+                        document.getElementById('noteDisplaySongs')
+                    ]
+                };
+            }
+
+            setupGradient() {
+                const gradient = this.ctx.createLinearGradient(0, 0, this.gradientCanvas.width, 0);
+                gradient.addColorStop(0, 'red');
+                gradient.addColorStop(0.16, 'orange');
+                gradient.addColorStop(0.33, 'yellow');
+                gradient.addColorStop(0.5, 'green');
+                gradient.addColorStop(0.66, 'blue');
+                gradient.addColorStop(0.83, 'indigo');
+                gradient.addColorStop(1, 'violet');
+                this.ctx.fillStyle = gradient;
+                this.ctx.fillRect(0, 0, this.gradientCanvas.width, this.gradientCanvas.height);
+            }
+
+            setupCanvases() {
+                this.canvases.soundWave.forEach(canvas => {
+                    if (canvas) {
+                        canvas.width = CONFIG.CANVAS_WIDTH;
+                        canvas.height = 150;
+                    }
+                });
+                this.canvases.lightSpectrum.forEach(canvas => {
+                    if (canvas) {
+                        canvas.width = CONFIG.CANVAS_WIDTH;
+                        canvas.height = 150;
+                        this.drawLightSpectrumBackground(canvas);
+                    }
+                });
+            }
+
+            drawLightSpectrumBackground(canvas) {
                 const ctx = canvas.getContext('2d');
                 const grad = ctx.createLinearGradient(0, 0, canvas.width, 0);
                 grad.addColorStop(0, 'red');
@@ -430,272 +467,460 @@
                 grad.addColorStop(1, 'violet');
                 ctx.fillStyle = grad;
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
-            });
-            canvases.noteDisplays.forEach(display => {
-                display.style.background = 'radial-gradient(circle, rgba(255, 255, 255, 0.1), rgba(0,0,0,0.7))';
-                display.textContent = '';
-            });
-            lastFreq = null;
-            lastColor = null;
-        }
-
-        function updateSoundWave(canvas, freq, color) {
-            const ctx = canvas.getContext('2d');
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.beginPath();
-            ctx.strokeStyle = color;
-            ctx.lineWidth = 2;
-            const amplitude = canvas.height / 4;
-            const wavelength = canvas.width / (freq / 220);
-            for (let x = 0; x < canvas.width; x++) {
-                const y = canvas.height / 2 + amplitude * Math.sin((x / wavelength) * 2 * Math.PI);
-                x === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
             }
-            ctx.stroke();
-        }
 
-        function updateLightSpectrum(canvas, freq) {
-            const ctx = canvas.getContext('2d');
-            const grad = ctx.createLinearGradient(0, 0, canvas.width, 0);
-            grad.addColorStop(0, 'red');
-            grad.addColorStop(0.16, 'orange');
-            grad.addColorStop(0.33, 'yellow');
-            grad.addColorStop(0.5, 'green');
-            grad.addColorStop(0.66, 'blue');
-            grad.addColorStop(0.83, 'indigo');
-            grad.addColorStop(1, 'violet');
-            ctx.fillStyle = grad;
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            const minFreq = 220;
-            const maxFreq = 880;
-            const logMin = Math.log2(minFreq);
-            const logMax = Math.log2(maxFreq);
-            const logFreq = Math.log2(freq);
-            const x = canvas.width * (logFreq - logMin) / (logMax - logMin);
-            ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
-            ctx.fillRect(x - 5, 0, 10, canvas.height);
-            ctx.fillStyle = '#000';
-            ctx.textAlign = 'left';
-            ctx.fillText(`${freq.toFixed(0)} Hz`, x, canvas.height / 2);
-        }
+            drawPiano() {
+                const keyWidth = this.pianoCanvas.width / CONFIG.NOTES.length;
+                this.pianoCtx.clearRect(0, 0, this.pianoCanvas.width, this.pianoCanvas.height);
 
-        // Gradient interaction
-        gradientCanvas.addEventListener('mousedown', startInteraction);
-        gradientCanvas.addEventListener('mousemove', moveInteraction);
-        gradientCanvas.addEventListener('mouseup', endInteraction);
-        gradientCanvas.addEventListener('touchstart', startInteraction);
-        gradientCanvas.addEventListener('touchmove', moveInteraction);
-        gradientCanvas.addEventListener('touchend', endInteraction);
+                CONFIG.NOTES.forEach((note, i) => {
+                    const x = i * keyWidth;
+                    const isPressed = state.pressedKeyIndex === i;
+                    const isHovered = state.hoveredKeyIndex === i;
+                    const color = this.getColorForNoteIndex(i);
 
-        function startInteraction(e) {
-            if (songPlaying) return;
-            isInteracting = true;
-            updatePosition(e);
-            playTone(getFrequency());
-        }
+                    // Draw key
+                    this.pianoCtx.fillStyle = color;
+                    const yOffset = isPressed ? 5 : 0;
+                    const height = this.pianoCanvas.height - yOffset;
+                    this.pianoCtx.fillRect(x, yOffset, keyWidth - 1, height);
 
-        function moveInteraction(e) {
-            if (isInteracting && !songPlaying) {
-                updatePosition(e);
-                if (oscillators.length) {
-                    const freq = getFrequency();
-                    oscillators[0].frequency.setValueAtTime(freq, audioCtx.currentTime);
-                    lastFreq = freq;
-                    lastColor = getColorAtX(currentX);
-                    updateAllVisualizations(lastFreq, lastColor);
+                    // Hover effect
+                    if (isHovered && !isPressed) {
+                        this.pianoCtx.fillStyle = 'rgba(255, 255, 255, 0.3)';
+                        this.pianoCtx.fillRect(x, 0, keyWidth - 1, this.pianoCanvas.height);
+                    }
+
+                    // Key border
+                    this.pianoCtx.strokeStyle = '#fff';
+                    this.pianoCtx.lineWidth = 1;
+                    this.pianoCtx.strokeRect(x, yOffset, keyWidth - 1, height);
+
+                    // Note label
+                    this.pianoCtx.fillStyle = '#fff';
+                    this.pianoCtx.textAlign = 'center';
+                    this.pianoCtx.textBaseline = 'middle';
+                    this.pianoCtx.font = '10px Orbitron';
+                    this.pianoCtx.fillText(note, x + keyWidth / 2, this.pianoCanvas.height / 2 + yOffset / 2);
+                });
+            }
+
+            getColorForNoteIndex(index) {
+                const x = (index + 0.5) * (this.gradientCanvas.width / CONFIG.NOTES.length);
+                return this.getColorAtX(x);
+            }
+
+            updateAll(freq, color, mode) {
+                if (!freq || !color) return;
+                const x = state.currentX / this.gradientCanvas.width;
+                const noteText = mode === 'continuous' ? `${freq.toFixed(0)} Hz` : CONFIG.NOTES[Math.round((CONFIG.NOTES.length - 1) * x)];
+                this.canvases.soundWave.forEach(canvas => {
+                    if (canvas) this.updateSoundWave(canvas, freq, color);
+                });
+                this.canvases.lightSpectrum.forEach(canvas => {
+                    if (canvas) this.updateLightSpectrum(canvas, freq);
+                });
+                this.canvases.noteDisplays.forEach(display => {
+                    if (display) {
+                        display.style.background = `radial-gradient(circle, ${color}, rgba(0,0,0,0.7))`;
+                        display.textContent = noteText;
+                    }
+                });
+            }
+
+            updateSoundWave(canvas, freq, color) {
+                const ctx = canvas.getContext('2d');
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.beginPath();
+                ctx.strokeStyle = color;
+                ctx.lineWidth = 2;
+                const amplitude = canvas.height / 4;
+                const wavelength = canvas.width / (freq / CONFIG.MIN_FREQ);
+                for (let x = 0; x < canvas.width; x++) {
+                    const y = canvas.height / 2 + amplitude * Math.sin((x / wavelength) * 2 * Math.PI);
+                    x === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
                 }
+                ctx.stroke();
             }
+
+            updateLightSpectrum(canvas, freq) {
+                const ctx = canvas.getContext('2d');
+                this.drawLightSpectrumBackground(canvas);
+                const logMin = Math.log2(CONFIG.MIN_FREQ);
+                const logMax = Math.log2(CONFIG.MAX_FREQ);
+                const logFreq = Math.log2(Math.max(CONFIG.MIN_FREQ, Math.min(CONFIG.MAX_FREQ, freq)));
+                const x = canvas.width * (logFreq - logMin) / (logMax - logMin);
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+                ctx.fillRect(Math.max(0, x - 5), 0, 10, canvas.height);
+                ctx.fillStyle = '#000';
+                ctx.textAlign = 'left';
+                ctx.font = '12px Orbitron';
+                ctx.fillText(`${freq.toFixed(0)} Hz`, x + 10, canvas.height / 2);
+            }
+
+            getColorAtX(x) {
+                const safeX = Math.min(Math.max(0, Math.floor(x)), this.gradientCanvas.width - 1);
+                const imageData = this.ctx.getImageData(safeX, 0, 1, 1).data;
+                return `rgb(${imageData[0]}, ${imageData[1]}, ${imageData[2]})`;
+            }
+
+            attachPianoEvents() {
+                // Remove existing listeners to prevent duplicates
+                this.pianoCanvas.removeEventListener('mousedown', this.handlePianoMouseDown);
+                this.pianoCanvas.removeEventListener('mousemove', this.handlePianoMouseMove);
+                this.pianoCanvas.removeEventListener('mouseout', this.handlePianoMouseOut);
+                this.pianoCanvas.removeEventListener('mouseup', this.handlePianoMouseUp);
+                this.pianoCanvas.removeEventListener('touchstart', this.handlePianoTouchStart);
+                this.pianoCanvas.removeEventListener('touchmove', this.handlePianoTouchMove);
+                this.pianoCanvas.removeEventListener('touchend', this.handlePianoTouchEnd);
+
+                // Define handlers
+                const getKeyIndex = (e) => {
+                    const rect = this.pianoCanvas.getBoundingClientRect();
+                    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+                    const offsetX = clientX - rect.left;
+                    const normalizedX = Math.max(0, Math.min(offsetX, rect.width));
+                    return Math.floor((normalizedX / rect.width) * CONFIG.NOTES.length);
+                };
+
+                const playKey = (keyIndex) => {
+                    if (state.songPlaying) return;
+                    state.setPressedKey(keyIndex);
+                    state.currentX = (keyIndex + 0.5) * (this.pianoCanvas.width / CONFIG.NOTES.length);
+                    const note = CONFIG.NOTES[keyIndex];
+                    const noteIdx = CONFIG.NOTES.indexOf(note);
+                    const freq = CONFIG.MIN_FREQ * Math.pow(2, noteIdx / 12);
+                    audio.playTone(freq);
+                    state.lastFreq = freq;
+                    state.lastColor = this.getColorForNoteIndex(keyIndex);
+                    this.updateAll(state.lastFreq, state.lastColor, 'discrete');
+                    this.drawPiano();
+                };
+
+                this.handlePianoMouseDown = (e) => {
+                    e.preventDefault();
+                    state.isInteracting = true;
+                    const keyIndex = getKeyIndex(e);
+                    playKey(keyIndex);
+                };
+
+                this.handlePianoMouseMove = (e) => {
+                    e.preventDefault();
+                    const keyIndex = getKeyIndex(e);
+                    state.setHoveredKey(keyIndex);
+                    if (state.isInteracting) {
+                        playKey(keyIndex);
+                    }
+                    this.drawPiano();
+                };
+
+                this.handlePianoMouseOut = () => {
+                    state.clearHoveredKey();
+                    this.drawPiano();
+                };
+
+                this.handlePianoMouseUp = () => {
+                    state.isInteracting = false;
+                    state.clearPressedKey();
+                    audio.stopTone();
+                    this.drawPiano();
+                };
+
+                this.handlePianoTouchStart = (e) => {
+                    e.preventDefault();
+                    state.isInteracting = true;
+                    const keyIndex = getKeyIndex(e);
+                    playKey(keyIndex);
+                };
+
+                this.handlePianoTouchMove = (e) => {
+                    e.preventDefault();
+                    const keyIndex = getKeyIndex(e);
+                    if (state.isInteracting) {
+                        playKey(keyIndex);
+                    }
+                    state.setHoveredKey(keyIndex);
+                    this.drawPiano();
+                };
+
+                this.handlePianoTouchEnd = () => {
+                    state.isInteracting = false;
+                    state.clearPressedKey();
+                    state.clearHoveredKey();
+                    audio.stopTone();
+                    this.drawPiano();
+                };
+
+                // Attach listeners
+                this.pianoCanvas.addEventListener('mousedown', this.handlePianoMouseDown);
+                this.pianoCanvas.addEventListener('mousemove', this.handlePianoMouseMove);
+                this.pianoCanvas.addEventListener('mouseout', this.handlePianoMouseOut);
+                this.pianoCanvas.addEventListener('mouseup', this.handlePianoMouseUp);
+                this.pianoCanvas.addEventListener('touchstart', this.handlePianoTouchStart);
+                this.pianoCanvas.addEventListener('touchmove', this.handlePianoTouchMove);
+                this.pianoCanvas.addEventListener('touchend', this.handlePianoTouchEnd);
+            }
+
+            attachGradientEvents() {
+                this.gradientCanvas.removeEventListener('mousedown', this.handleGradientMouseDown);
+                this.gradientCanvas.removeEventListener('mousemove', this.handleGradientMouseMove);
+                this.gradientCanvas.removeEventListener('mouseup', this.handleGradientMouseUp);
+                this.gradientCanvas.removeEventListener('touchstart', this.handleGradientTouchStart);
+                this.gradientCanvas.removeEventListener('touchmove', this.handleGradientTouchMove);
+                this.gradientCanvas.removeEventListener('touchend', this.handleGradientTouchEnd);
+
+                this.handleGradientMouseDown = (e) => startInteraction(e, this.gradientCanvas);
+                this.handleGradientMouseMove = (e) => moveInteraction(e, this.gradientCanvas);
+                this.handleGradientMouseUp = endInteraction;
+                this.handleGradientTouchStart = (e) => startInteraction(e, this.gradientCanvas);
+                this.handleGradientTouchMove = (e) => moveInteraction(e, this.gradientCanvas);
+                this.handleGradientTouchEnd = endInteraction;
+
+                this.gradientCanvas.addEventListener('mousedown', this.handleGradientMouseDown);
+                this.gradientCanvas.addEventListener('mousemove', this.handleGradientMouseMove);
+                this.gradientCanvas.addEventListener('mouseup', this.handleGradientMouseUp);
+                this.gradientCanvas.addEventListener('touchstart', this.handleGradientTouchStart);
+                this.gradientCanvas.addEventListener('touchmove', this.handleGradientTouchMove);
+                this.gradientCanvas.addEventListener('touchend', this.handleGradientTouchEnd);
+            }
+        }
+
+        // Song management
+        class SongManager {
+            constructor() {
+                this.songs = {
+                    godOnlyKnows: [
+                        { note: 'E4', dur: 400 }, { note: 'D4', dur: 400 }, { note: 'C4', dur: 400 }, { note: 'B3', dur: 400 },
+                        { note: 'A3', dur: 400 }, { note: 'G3', dur: 400 }, { note: 'F3', dur: 400 }, { note: 'E3', dur: 400 },
+                        { note: 'D3', dur: 400 }, { note: 'C3', dur: 400 }, { note: 'B2', dur: 400 }, { note: 'A2', dur: 400 }
+                    ],
+                    happy: [
+                        { note: 'F4', dur: 400 }, { note: 'F4', dur: 400 }, { note: 'F4', dur: 400 }, { note: 'F4', dur: 400 },
+                        { note: 'F4', dur: 400 }, { note: 'F4', dur: 400 }, { note: 'F4', dur: 400 }, { note: 'F4', dur: 400 }
+                    ],
+                    stairwayToHeaven: [
+                        { note: 'A3', dur: 360 }, { note: 'A3', dur: 360 }, { note: 'C4', dur: 360 }, { note: 'D4', dur: 360 },
+                        { note: 'D4', dur: 360 }, { note: 'E4', dur: 360 }, { note: 'E4', dur: 360 }, { note: 'G4', dur: 360 },
+                        { note: 'A4', dur: 720 }
+                    ],
+                    jingleBells: [
+                        { note: 'E4', dur: 400 }, { note: 'E4', dur: 400 }, { note: 'E4', dur: 800 }, { note: 'E4', dur: 400 },
+                        { note: 'E4', dur: 400 }, { note: 'E4', dur: 800 }, { note: 'G4', dur: 400 }, { note: 'C4', dur: 400 },
+                        { note: 'D4', dur: 400 }, { note: 'D4', dur: 400 }, { note: 'E4', dur: 400 }, { note: 'D4', dur: 400 },
+                        { note: 'D4', dur: 800 }
+                    ],
+
+                    maryHadALittleLamb: [
+                        { note: 'E4', dur: 400 }, { note: 'D4', dur: 400 }, { note: 'C4', dur: 400 }, { note: 'D4', dur: 400 },
+                        { note: 'E4', dur: 400 }, { note: 'E4', dur: 400 }, { note: 'E4', dur: 800 },
+                        { note: 'D4', dur: 400 }, { note: 'D4', dur: 400 }, { note: 'E4', dur: 400 }, { note: 'D4', dur: 400 },
+                        { note: 'C4', dur: 400 }
+                    ],
+
+                    theEntertainer: [
+                        { note: 'C4', dur: 400 }, { note: 'E4', dur: 400 }, { note: 'G4', dur: 400 }, { note: 'C5', dur: 400 },
+                        { note: 'E5', dur: 400 }, { note: 'G5', dur: 400 }, { note: 'C6', dur: 400 }, { note: 'E6', dur: 400 },
+                        { note: 'G6', dur: 400 }, { note: 'C7', dur: 400 }
+                    ],
+                    allTheSmallThings: [
+                        { note: 'C4', dur: 400 }, { note: 'C4', dur: 400 }, { note: 'G4', dur: 400 }, { note: 'G4', dur: 400 },
+                        { note: 'A4', dur: 400 }, { note: 'A4', dur: 400 }, { note: 'G4', dur: 800 },
+                        { note: 'F4', dur: 400 }, { note: 'F4', dur: 400 }, { note: 'E4', dur: 400 }, { note: 'E4', dur: 400 },
+                        { note: 'D4', dur: 400 }, { note: 'D4', dur: 400 }, { note: 'C4', dur: 800 }
+                    ],
+                    iris: [
+                        { note: 'G4', dur: 400 }, { note: 'G4', dur: 400 }, { note: 'A4', dur: 400 }, { note: 'B4', dur: 400 },
+                        { note: 'C5', dur: 400 }, { note: 'B4', dur: 400 }, { note: 'A4', dur: 400 }, { note: 'G4', dur: 400 },
+                        { note: 'F4', dur: 400 }, { note: 'E4', dur: 400 }, { note: 'D4', dur: 400 }, { note: 'C4', dur: 400 }
+                    ],
+                    twinkle: [
+                        { note: 'C4', dur: 400 }, { note: 'C4', dur: 400 }, { note: 'G4', dur: 400 }, { note: 'G4', dur: 400 },
+                        { note: 'A4', dur: 400 }, { note: 'A4', dur: 400 }, { note: 'G4', dur: 800 },
+                        { note: 'F4', dur: 400 }, { note: 'F4', dur: 400 }, { note: 'E4', dur: 400 }, { note: 'E4', dur: 400 },
+                        { note: 'D4', dur: 400 }, { note: 'D4', dur: 400 }, { note: 'C4', dur: 800 }
+                    ],
+                    ode: [
+                        { note: 'E4', dur: 400 }, { note: 'E4', dur: 400 }, { note: 'F4', dur: 400 }, { note: 'G4', dur: 400 },
+                        { note: 'G4', dur: 400 }, { note: 'F4', dur: 400 }, { note: 'E4', dur: 400 }, { note: 'D4', dur: 400 },
+                        { note: 'C4', dur: 400 }, { note: 'C4', dur: 400 }, { note: 'D4', dur: 400 }, { note: 'E4', dur: 400 },
+                        { note: 'E4', dur: 600 }, { note: 'D4', dur: 200 }, { note: 'D4', dur: 800 }
+                    ],
+                    mary: [
+                        { note: 'E4', dur: 400 }, { note: 'D4', dur: 400 }, { note: 'C4', dur: 400 }, { note: 'D4', dur: 400 },
+                        { note: 'E4', dur: 400 }, { note: 'E4', dur: 400 }, { note: 'E4', dur: 800 },
+                        { note: 'D4', dur: 400 }, { note: 'D4', dur: 400 }, { note: 'D4', dur: 800 },
+                        { note: 'E4', dur: 400 }, { note: 'G4', dur: 400 }, { note: 'G4', dur: 800 }
+                    ],
+                    happy: [
+                        { note: 'C4', dur: 400 }, { note: 'C4', dur: 400 }, { note: 'D4', dur: 800 }, { note: 'C4', dur: 800 },
+                        { note: 'F4', dur: 800 }, { note: 'E4', dur: 1200 }, { note: 'C4', dur: 400 }, { note: 'C4', dur: 400 },
+                        { note: 'D4', dur: 800 }, { note: 'C4', dur: 800 }, { note: 'G4', dur: 800 }, { note: 'F4', dur: 1200 }
+                    ],
+                    jingle: [
+                        { note: 'E4', dur: 400 }, { note: 'E4', dur: 400 }, { note: 'E4', dur: 800 }, { note: 'E4', dur: 400 },
+                        { note: 'E4', dur: 400 }, { note: 'E4', dur: 800 }, { note: 'E4', dur: 400 }, { note: 'G4', dur: 400 },
+                        { note: 'C4', dur: 600 }, { note: 'D4', dur: 200 }, { note: 'E4', dur: 1200 }
+                    ],
+                    row: [
+                        { note: 'C4', dur: 400 }, { note: 'C4', dur: 400 }, { note: 'C4', dur: 400 }, { note: 'D4', dur: 400 },
+                        { note: 'E4', dur: 800 }, { note: 'E4', dur: 400 }, { note: 'D4', dur: 400 }, { note: 'E4', dur: 400 },
+                        { note: 'F4', dur: 400 }, { note: 'G4', dur: 800 }
+                    ],
+                    london: [
+                        { note: 'G4', dur: 400 }, { note: 'A4', dur: 400 }, { note: 'G4', dur: 400 }, { note: 'F4', dur: 400 },
+                        { note: 'E4', dur: 400 }, { note: 'F4', dur: 400 }, { note: 'G4', dur: 800 },
+                        { note: 'D4', dur: 400 }, { note: 'E4', dur: 400 }, { note: 'F4', dur: 400 }, { note: 'E4', dur: 400 },
+                        { note: 'D4', dur: 800 }
+                    ],
+                    frere: [
+                        { note: 'F4', dur: 400 }, { note: 'G4', dur: 400 }, { note: 'A4', dur: 400 }, { note: 'F4', dur: 400 },
+                        { note: 'A4', dur: 400 }, { note: 'G4', dur: 400 }, { note: 'F4', dur: 400 }, { note: 'G4', dur: 400 },
+                        { note: 'F4', dur: 800 }
+                    ],
+                    sweetHome: [
+                        { note: 'D4', dur: 400 }, { note: 'E4', dur: 400 }, { note: 'F#4', dur: 400 }, { note: 'G4', dur: 400 },
+                        { note: 'A4', dur: 800 }, { note: 'G4', dur: 400 }, { note: 'F#4', dur: 400 },
+                        { note: 'E4', dur: 400 }, { note: 'D4', dur: 800 }
+                    ],
+                    imperialMarch: [
+                        { note: 'G4', dur: 400 }, { note: 'G4', dur: 400 }, { note: 'G4', dur: 400 },
+                        { note: 'E4', dur: 300 }, { note: 'B4', dur: 100 }, { note: 'G4', dur: 400 },
+                        { note: 'E4', dur: 300 }, { note: 'B4', dur: 100 }, { note: 'G4', dur: 800 }
+                    ],
+                    mario: [
+                        { note: 'E5', dur: 200 }, { note: 'E5', dur: 200 }, { note: 'E5', dur: 400 },
+                        { note: 'C5', dur: 200 }, { note: 'E5', dur: 400 }, { note: 'G5', dur: 400 },
+                        { note: 'G4', dur: 400 }
+                    ]
+                };
+                this.songSelect = document.getElementById('songSelect');
+                this.updateSongDropdown();
+            }
+
+            updateSongDropdown() {
+                this.songSelect.innerHTML = '';
+                Object.keys(this.songs).forEach(key => {
+                    const option = document.createElement('option');
+                    option.value = key;
+                    option.textContent = key.charAt(0).toUpperCase() + key.slice(1).replace(/([A-Z])/g, ' $1');
+                    this.songSelect.appendChild(option);
+                });
+            }
+
+            saveMelody(name, input) {
+                if (!name || !input) throw new Error('Name and melody required');
+                const melody = input.split(',').map(part => {
+                    const [note, dur] = part.trim().split(/\s+/);
+                    if (!CONFIG.NOTES.includes(note) || isNaN(dur) || dur <= 0) {
+                        throw new Error(`Invalid note "${note}" or duration "${dur}"`);
+                    }
+                    return { note, dur: parseInt(dur) };
+                });
+                const key = name.toLowerCase().replace(/\s+/g, '');
+                this.songs[key] = melody;
+                this.updateSongDropdown();
+                this.songSelect.value = key;
+            }
+
+            getSong(key) {
+                return this.songs[key] || [];
+            }
+        }
+
+        // Initialize
+        const state = new AppState();
+        const audio = new AudioManager();
+        const viz = new Visualizer();
+        const songs = new SongManager();
+
+        function getFrequency(x, mode) {
+            const ratio = x / viz.gradientCanvas.width;
+            return mode === 'continuous'
+                ? CONFIG.MIN_FREQ * Math.pow(2, 2 * ratio)
+                : CONFIG.MIN_FREQ * Math.pow(2, Math.round((CONFIG.NOTES.length - 1) * ratio) / 12);
+        }
+
+        function startInteraction(e, canvas) {
+            if (state.songPlaying) return;
+            state.isInteracting = true;
+            updatePosition(e, canvas);
+            const freq = getFrequency(state.currentX, state.mode);
+            audio.playTone(freq);
+            state.lastFreq = freq;
+            state.lastColor = viz.getColorAtX(state.currentX);
+            viz.updateAll(state.lastFreq, state.lastColor, state.mode);
+        }
+
+        function moveInteraction(e, canvas) {
+            if (!state.isInteracting || state.songPlaying) return;
+            updatePosition(e, canvas);
+            const freq = getFrequency(state.currentX, state.mode);
+            if (audio.oscillators.length) {
+                audio.oscillators[0].frequency.setValueAtTime(freq, audio.audioCtx.currentTime);
+                audio.oscillators[1].frequency.setValueAtTime(freq * 1.02, audio.audioCtx.currentTime);
+            }
+            state.lastFreq = freq;
+            state.lastColor = viz.getColorAtX(state.currentX);
+            viz.updateAll(state.lastFreq, state.lastColor, state.mode);
         }
 
         function endInteraction() {
-            if (!songPlaying) {
-                isInteracting = false;
-                stopTone();
-                // Visualizations retain last state
+            if (!state.songPlaying) {
+                state.isInteracting = false;
+                audio.stopTone();
+                state.clearPressedKey();
+                viz.drawPiano();
             }
         }
 
-        function updatePosition(e) {
-            const rect = gradientCanvas.getBoundingClientRect();
-            currentX = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
-            currentX = Math.max(0, Math.min(currentX, gradientCanvas.width));
-        }
-
-        function getPositionRatio() { return currentX / gradientCanvas.width; }
-
-        function getFrequency() {
-            const x = getPositionRatio();
-            return mode === 'continuous' ? 220 * Math.pow(2, 2 * x) : 220 * Math.pow(2, Math.round(24 * x) / 12);
-        }
-
-        function getColorAtX(x) {
-            const imageData = ctx.getImageData(Math.floor(x), 0, 1, 1).data;
-            return `rgb(${imageData[0]}, ${imageData[1]}, ${imageData[2]})`;
+        function updatePosition(e, canvas) {
+            const rect = canvas.getBoundingClientRect();
+            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            const offsetX = clientX - rect.left;
+            state.updatePosition(offsetX, rect.width);
         }
 
         // Controls
         document.getElementById('toggleMode').addEventListener('click', () => {
-            mode = mode === 'continuous' ? 'discrete' : 'continuous';
-            document.getElementById('toggleMode').textContent = `${mode === 'continuous' ? 'Discrete' : 'Continuous'} Mode`;
-            if (isInteracting && oscillators.length) {
-                const freq = getFrequency();
-                oscillators[0].frequency.setValueAtTime(freq, audioCtx.currentTime);
-                lastFreq = freq;
-                lastColor = getColorAtX(currentX);
-                updateAllVisualizations(lastFreq, lastColor);
-            } else if (lastFreq && lastColor) {
-                // Update visuals to reflect mode change even if not playing
-                const freq = getFrequency();
-                lastFreq = freq;
-                lastColor = getColorAtX(currentX);
-                updateAllVisualizations(lastFreq, lastColor);
+            state.toggleMode();
+            document.getElementById('toggleMode').textContent = `${state.mode === 'continuous' ? 'Discrete' : 'Continuous'} Mode`;
+            if (state.lastFreq && state.lastColor) {
+                const freq = getFrequency(state.currentX, state.mode);
+                state.lastFreq = freq;
+                viz.updateAll(state.lastFreq, state.lastColor, state.mode);
             }
         });
 
         document.getElementById('stopTone').addEventListener('click', () => {
-            stopTone();
-            isInteracting = false;
-            songPlaying = false;
-            // Visualizations retain last state
+            audio.stopTone();
+            state.isInteracting = false;
+            state.songPlaying = false;
+            state.clearPressedKey();
+            viz.drawPiano();
         });
 
-        // Color Piano
-        const pianoCanvas = document.getElementById('pianoCanvas');
-        pianoCanvas.width = gradientCanvas.width;
-        const pianoCtx = pianoCanvas.getContext('2d');
-        const keyWidth = pianoCanvas.width / 25;
-        notes.forEach((note, i) => {
-            const x = i * keyWidth;
-            const color = getColorAtX(x + keyWidth / 2);
-            pianoCtx.fillStyle = color;
-            pianoCtx.fillRect(x, 0, keyWidth, pianoCanvas.height);
-            pianoCtx.strokeStyle = '#fff';
-            pianoCtx.strokeRect(x, 0, keyWidth, pianoCanvas.height);
-            pianoCtx.fillStyle = '#fff';
-            pianoCtx.textAlign = 'left';
-            pianoCtx.fillText(note, x + keyWidth / 2, pianoCanvas.height / 2);
-        });
-
-        pianoCanvas.addEventListener('mousedown', e => {
-            if (songPlaying) return;
-            const rect = pianoCanvas.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            currentX = x * (gradientCanvas.width / pianoCanvas.width);
-            const freq = getFrequency();
-            playTone(freq);
-        });
-        pianoCanvas.addEventListener('mouseup', () => {
-            if (!songPlaying) stopTone();
-        });
-        pianoCanvas.addEventListener('touchstart', e => {
-            if (songPlaying) return;
-            const rect = pianoCanvas.getBoundingClientRect();
-            const x = e.touches[0].clientX - rect.left;
-            currentX = x * (gradientCanvas.width / pianoCanvas.width);
-            const freq = getFrequency();
-            playTone(freq);
-        });
-        pianoCanvas.addEventListener('touchend', () => {
-            if (!songPlaying) stopTone();
-        });
-
-        // Songs and Custom Melodies
-        const songs = {
-            twinkle: [
-                { note: 'C4', dur: 400 }, { note: 'C4', dur: 400 }, { note: 'G4', dur: 400 }, { note: 'G4', dur: 400 },
-                { note: 'A4', dur: 400 }, { note: 'A4', dur: 400 }, { note: 'G4', dur: 800 },
-                { note: 'F4', dur: 400 }, { note: 'F4', dur: 400 }, { note: 'E4', dur: 400 }, { note: 'E4', dur: 400 },
-                { note: 'D4', dur: 400 }, { note: 'D4', dur: 400 }, { note: 'C4', dur: 800 }
-            ],
-            ode: [
-                { note: 'E4', dur: 400 }, { note: 'E4', dur: 400 }, { note: 'F4', dur: 400 }, { note: 'G4', dur: 400 },
-                { note: 'G4', dur: 400 }, { note: 'F4', dur: 400 }, { note: 'E4', dur: 400 }, { note: 'D4', dur: 400 },
-                { note: 'C4', dur: 400 }, { note: 'C4', dur: 400 }, { note: 'D4', dur: 400 }, { note: 'E4', dur: 400 },
-                { note: 'E4', dur: 600 }, { note: 'D4', dur: 200 }, { note: 'D4', dur: 800 }
-            ],
-            mary: [
-                { note: 'E4', dur: 400 }, { note: 'D4', dur: 400 }, { note: 'C4', dur: 400 }, { note: 'D4', dur: 400 },
-                { note: 'E4', dur: 400 }, { note: 'E4', dur: 400 }, { note: 'E4', dur: 800 },
-                { note: 'D4', dur: 400 }, { note: 'D4', dur: 400 }, { note: 'D4', dur: 800 },
-                { note: 'E4', dur: 400 }, { note: 'G4', dur: 400 }, { note: 'G4', dur: 800 }
-            ],
-            happy: [
-                { note: 'C4', dur: 400 }, { note: 'C4', dur: 400 }, { note: 'D4', dur: 800 }, { note: 'C4', dur: 800 },
-                { note: 'F4', dur: 800 }, { note: 'E4', dur: 1200 }, { note: 'C4', dur: 400 }, { note: 'C4', dur: 400 },
-                { note: 'D4', dur: 800 }, { note: 'C4', dur: 800 }, { note: 'G4', dur: 800 }, { note: 'F4', dur: 1200 }
-            ],
-            jingle: [
-                { note: 'E4', dur: 400 }, { note: 'E4', dur: 400 }, { note: 'E4', dur: 800 }, { note: 'E4', dur: 400 },
-                { note: 'E4', dur: 400 }, { note: 'E4', dur: 800 }, { note: 'E4', dur: 400 }, { note: 'G4', dur: 400 },
-                { note: 'C4', dur: 600 }, { note: 'D4', dur: 200 }, { note: 'E4', dur: 1200 }
-            ],
-            row: [
-                { note: 'C4', dur: 400 }, { note: 'C4', dur: 400 }, { note: 'C4', dur: 400 }, { note: 'D4', dur: 400 },
-                { note: 'E4', dur: 800 }, { note: 'E4', dur: 400 }, { note: 'D4', dur: 400 }, { note: 'E4', dur: 400 },
-                { note: 'F4', dur: 400 }, { note: 'G4', dur: 800 }
-            ],
-            london: [
-                { note: 'G4', dur: 400 }, { note: 'A4', dur: 400 }, { note: 'G4', dur: 400 }, { note: 'F4', dur: 400 },
-                { note: 'E4', dur: 400 }, { note: 'F4', dur: 400 }, { note: 'G4', dur: 800 },
-                { note: 'D4', dur: 400 }, { note: 'E4', dur: 400 }, { note: 'F4', dur: 400 }, { note: 'E4', dur: 400 },
-                { note: 'D4', dur: 800 }
-            ],
-            frere: [
-                { note: 'F4', dur: 400 }, { note: 'G4', dur: 400 }, { note: 'A4', dur: 400 }, { note: 'F4', dur: 400 },
-                { note: 'A4', dur: 400 }, { note: 'G4', dur: 400 }, { note: 'F4', dur: 400 }, { note: 'G4', dur: 400 },
-                { note: 'F4', dur: 800 }
-            ],
-            sweetHome: [
-                { note: 'D4', dur: 400 }, { note: 'E4', dur: 400 }, { note: 'F#4', dur: 400 }, { note: 'G4', dur: 400 },
-                { note: 'A4', dur: 800 }, { note: 'G4', dur: 400 }, { note: 'F#4', dur: 400 },
-                { note: 'E4', dur: 400 }, { note: 'D4', dur: 800 }
-            ],
-            imperialMarch: [
-                { note: 'G4', dur: 400 }, { note: 'G4', dur: 400 }, { note: 'G4', dur: 400 },
-                { note: 'E4', dur: 300 }, { note: 'B4', dur: 100 }, { note: 'G4', dur: 400 },
-                { note: 'E4', dur: 300 }, { note: 'B4', dur: 100 }, { note: 'G4', dur: 800 }
-            ],
-            mario: [
-                { note: 'E5', dur: 200 }, { note: 'E5', dur: 200 }, { note: 'E5', dur: 400 },
-                { note: 'C5', dur: 200 }, { note: 'E5', dur: 400 }, { note: 'G5', dur: 400 },
-                { note: 'G4', dur: 400 }
-            ]
-        };
-
-        const songSelect = document.getElementById('songSelect');
-        const melodyInput = document.getElementById('melodyInput');
-        const melodyNameInput = document.getElementById('melodyName');
-        const saveMelodyButton = document.getElementById('saveMelody');
-
-        function updateSongDropdown() {
-            songSelect.innerHTML = '';
-            Object.keys(songs).forEach(key => {
-                const option = document.createElement('option');
-                option.value = key;
-                option.textContent = key.charAt(0).toUpperCase() + key.slice(1).replace(/([A-Z])/g, ' $1');
-                songSelect.appendChild(option);
-            });
-        }
-        updateSongDropdown();
-
+        // Song controls
         document.getElementById('playSong').addEventListener('click', () => {
-            if (songPlaying) return;
-            songPlaying = true;
-            const song = songs[document.getElementById('songSelect').value];
+            if (state.songPlaying) return;
+            state.songPlaying = true;
+            const song = songs.getSong(document.getElementById('songSelect').value);
             let i = 0;
             function playNextNote() {
-                if (i >= song.length || !songPlaying) {
-                    stopTone();
-                    songPlaying = false;
+                if (i >= song.length || !state.songPlaying) {
+                    audio.stopTone();
+                    state.songPlaying = false;
                     return;
                 }
                 const { note, dur } = song[i++];
-                const noteIdx = notes.indexOf(note);
-                currentX = (noteIdx / 24) * gradientCanvas.width;
-                const freq = 220 * Math.pow(2, noteIdx / 12);
-                playTone(freq);
+                const noteIdx = CONFIG.NOTES.indexOf(note);
+                state.currentX = (noteIdx / (CONFIG.NOTES.length - 1)) * viz.gradientCanvas.width;
+                const freq = CONFIG.MIN_FREQ * Math.pow(2, noteIdx / 12);
+                audio.playTone(freq);
+                state.lastFreq = freq;
+                state.lastColor = viz.getColorAtX(state.currentX);
+                viz.updateAll(state.lastFreq, state.lastColor, state.mode);
                 setTimeout(() => {
-                    stopTone();
+                    audio.stopTone();
                     setTimeout(playNextNote, 50);
                 }, dur * 0.9);
             }
@@ -703,35 +928,35 @@
         });
 
         document.getElementById('stopSong').addEventListener('click', () => {
-            stopTone();
-            songPlaying = false;
+            audio.stopTone();
+            state.songPlaying = false;
         });
 
-        saveMelodyButton.addEventListener('click', () => {
-            const name = melodyNameInput.value.trim();
-            const input = melodyInput.value.trim();
-            if (!name || !input) {
-                alert('Please enter a name and melody!');
-                return;
-            }
+        document.getElementById('saveMelody').addEventListener('click', () => {
             try {
-                const melody = input.split(',').map(part => {
-                    const [note, dur] = part.trim().split(/\s+/);
-                    if (!notes.includes(note) || isNaN(dur) || dur <= 0) {
-                        throw new Error(`Invalid note "${note}" or duration "${dur}"! Use notes A3–A5 and positive durations (e.g., C4 400).`);
-                    }
-                    return { note, dur: parseInt(dur) };
-                });
-                const key = name.toLowerCase().replace(/\s+/g, '');
-                songs[key] = melody;
-                updateSongDropdown();
-                melodyNameInput.value = '';
-                melodyInput.value = '';
-                songSelect.value = key;
+                const name = document.getElementById('melodyName').value.trim();
+                const input = document.getElementById('melodyInput').value.trim();
+                songs.saveMelody(name, input);
+                document.getElementById('melodyName').value = '';
+                document.getElementById('melodyInput').value = '';
             } catch (error) {
                 alert(error.message);
             }
         });
+
+        // Monitor DOM changes
+        const observer = new MutationObserver((mutations) => {
+            mutations.forEach(mutation => {
+                if (mutation.type === 'childList' && mutation.target.tagName === 'MAIN') {
+                    viz.attachPianoEvents();
+                    viz.attachGradientEvents();
+                    viz.drawPiano();
+                }
+            });
+        });
+        observer.observe(document.querySelector('main'), { childList: true, subtree: true });
+
+
     </script>
 </body>
 
