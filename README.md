@@ -1,198 +1,304 @@
 # Chromatic Symphony
-[Click here to experience the visualization](https://html-preview.github.io/?url=https://github.com/JamalYusuf/Chromatic-Symphony/blob/main/chromatic_symphony.html)
+
+**Chromatic Symphony** is an interactive web application that blends music and color in a synesthetic experience, allowing users to explore the interplay of sound and visuals through a digital canvas. Built as a love letter to synesthesia, it lets users paint with sound, play a colorful piano, and compose melodies that bloom into vibrant visualizations. Crafted with a sci-fi aesthetic, it draws inspiration from retro Winamp visualizers and generative art, offering a playground for creativity.
+
+This README is designed for developers interested in understanding, running, contributing to, or extending the project.
+
+---
+
+## Table of Contents
+
+- [Overview](#overview)
+- [Purpose](#purpose)
+- [Features](#features)
+- [Project Structure](#project-structure)
+- [Technical Information for Developers](#technical-information-for-developers)
+- [How to Run](#how-to-run)
+- [Usage Examples](#usage-examples)
+- [Extending the Project](#extending-the-project)
+- [Developer Notes](#developer-notes)
+- [Credits](#credits)
+- [License](#license)
+
+---
+
 ## Overview
 
-**Chromatic Symphony** is a single-file, self-contained web application built with HTML, CSS, and JavaScript, designed to run in modern browsers without external dependencies beyond a Google Fonts CDN for styling. This interactive digital art piece explores the concept of synesthesia—the blending of senses where colors trigger sounds and sounds evoke colors. It’s a creative playground that bridges science and art, allowing users to interact with a color gradient, play a color-coded piano, and experience melodies (both preloaded and custom) as visual and auditory symphonies.
+*Chromatic Symphony* is a single-page web application that transforms musical notes into colors and vice versa, creating a synesthetic experience where senses collide. Users can interact with a gradient to play continuous or discrete tones, tickle a color-coded piano, play preloaded songs, or compose their own melodies. Each interaction is visualized through sound waves and light spectra, rendered on HTML5 canvases, with a futuristic UI featuring neon glows and glassy panels.
 
-The project uses the Web Audio API for real-time sound generation and 2D canvas elements for visualizations, wrapped in a sleek, futuristic interface inspired by classic music visualizers (e.g., Winamp) and generative art. It’s both an educational tool—teaching about sound and light frequencies—and a canvas for artistic expression, inviting users to "hear the rainbow and see the music."
+The project is built with vanilla JavaScript, HTML, and CSS, leveraging the Web Audio API for sound generation and the Canvas API for visualizations. It’s designed to be both a creative tool and a technical showcase of interactive web development.
 
 ---
 
 ## Purpose
 
-The purpose of Chromatic Symphony is threefold:
-1. **Artistic Exploration**: To create a multi-sensory experience where users can interact with color and sound, inspired by synesthesia, fostering creativity and imagination.
-2. **Education**: To teach users about the relationship between sound frequencies (measured in Hz) and light frequencies (measured in THz), using an artistic mapping to make abstract concepts tangible.
-3. **Interactivity**: To provide a dynamic, user-driven platform where melodies can be played, visualized, and even composed in plain text, blending technical precision with artistic freedom.
+The purpose of *Chromatic Symphony* is to:
 
-This project is designed for artists, developers, and curious minds who want to explore the intersection of technology and creativity.
+- **Celebrate Synesthesia**: Provide a digital space where users can experience music as color and color as music, inspired by the neurological phenomenon of synesthesia.
+- **Encourage Creativity**: Offer intuitive tools for composing music and exploring visual art, accessible to beginners and artists alike.
+- **Demonstrate Web Technologies**: Showcase the power of modern web APIs (Web Audio, Canvas) in creating immersive, interactive experiences without external dependencies.
+- **Inspire Developers**: Serve as an open-source example of modular JavaScript, event-driven programming, and real-time visualizations.
 
 ---
 
 ## Features
 
-### Core Functionality
-- **Color Gradient Interaction**:
-  - Users can drag across a red-to-violet gradient to play tones ranging from 220 Hz (red) to 880 Hz (violet).
-  - Toggle between "Continuous Mode" (smooth frequency changes) and "Discrete Mode" (snapping to musical notes A3–A5).
-  - A "Stop Tone" button halts playback instantly.
-- **Color Piano**:
-  - A 25-key piano (A3–A5) with each key colored according to the gradient.
-  - Clicking or tapping a key plays its corresponding tone, updating visualizations.
-- **Songs in Color**:
-  - Preloaded melodies (e.g., "Twinkle, Twinkle," "Sweet Home Alabama") play as sequences of colors on the gradient.
-  - Custom melody input allows users to type melodies in plain text (e.g., "C4 400, D4 400"), name them, save them, and play them from a dropdown menu.
+*Chromatic Symphony* includes the following features:
 
-### Visualizations
+- **Paint with Sound**:
+  - Drag across a color gradient to play tones (continuous or discrete modes).
+  - Visualize the frequency as a sound wave and light spectrum on canvases.
+  - Displays the current note or frequency (e.g., "C4" or "440 Hz").
 - **Sound Waves in Motion**:
-  - A 2D canvas displays a sine wave representing the current frequency, with wavelength and amplitude varying dynamically (low frequencies = wide waves, high = tight waves).
-  - Colored according to the gradient position.
-- **The Light Spectrum Unveiled**:
-  - A 2D canvas shows a static rainbow gradient (red at 430 THz to violet at 770 THz), with a white marker sliding to indicate the current frequency (220–880 Hz).
-  - Labels the frequency in Hz for clarity.
-
-### Technical Details
-- **Sound Generation**: Uses the Web Audio API with two oscillators (triangle and detuned sine) and a low-pass filter for rich, modern tones.
-- **Frequency Mapping**: Maps the visible spectrum’s hue (red to violet) to an audible range (220–880 Hz) using an exponential function in continuous mode or a discrete note scale (A3–A5) in discrete mode.
-- **UI**: Styled with a futuristic aesthetic—neon gradients, glassmorphism (backdrop-filter), and the "Orbitron" font from Google Fonts.
-
----
-
-## What It Does
-
-Chromatic Symphony transforms user interactions into a synesthetic experience:
-- **Dragging the Gradient**: Plays a tone based on the cursor’s position, updating the display and visualizations in real-time.
-- **Tapping the Piano**: Triggers a note tied to a specific color, reflecting its frequency visually.
-- **Playing Songs**: Sequences preloaded or custom melodies as colored notes, with each note lighting up the gradient and driving the sound wave and spectrum visuals.
-- **Creating Melodies**: Parses plain text input (e.g., "G4 400, A4 400") into a playable sequence, adding it to the song library for instant playback.
-
-The application educates through its "Magic of Sound and Light" section, explaining sound (20–20,000 Hz) and light (430–770 THz) frequencies, and how they’re artistically mapped here. Visualizations make these concepts concrete, showing wave patterns and spectrum positions as users interact.
+  - A standalone canvas showing a dynamic sound wave based on the current tone.
+- **Light Spectrum Unveiled**:
+  - A canvas mapping frequencies to a rainbow gradient, highlighting the current note’s position.
+- **Tickle the Color Piano**:
+  - A 25-key piano (A3 to A5) where each key plays a note and displays its color.
+  - Supports mouse and touch input with a 5px pressed effect, hover overlay, and 10px note labels.
+  - Fixed to ensure accurate key selection (e.g., F5 plays F5, not F#5).
+- **Songs in Color**:
+  - Play preloaded melodies (e.g., "Twinkle Twinkle Little Star") with synesthetic visuals.
+  - Compose and save custom melodies using a text-based input (e.g., `C4 400, D4 400, E4 800`).
+  - Visualize playback with note displays, sound waves, and light spectra.
+- **Sci-Fi Aesthetic**:
+  - Neon colors, glassy panels, and Orbitron font for a futuristic vibe.
+  - Responsive design with smooth transitions and shadows.
+- **No Dependencies**:
+  - Built with vanilla JavaScript, HTML, and CSS, relying only on browser APIs.
 
 ---
 
 ## Project Structure
 
-Since this is a single-file application, all code resides in `chromatic_symphony.html`. Here’s a breakdown:
+The project is contained in a single file, `index.html`, which includes HTML, CSS, and JavaScript. Here’s the structure:
 
-### HTML
-- **Structure**: Organized into `<header>`, `<main>` with multiple `<section>` elements, and `<footer>`.
-- **Sections**: Welcome, Sound and Light explanation, Sound Wave visualization, Light Spectrum visualization, Gradient interaction, Piano, Songs in Color (with custom input).
+```
+chromatic-symphony/
+├── index.html          # Main application file (HTML, CSS, JavaScript)
+├── README.md          # This file
+```
 
-### CSS
-- **Styling**: 
-  - Dark radial background with neon accents (`#00ffcc`, `#ff00cc`).
-  - Glassmorphism via `backdrop-filter: blur(12px)` and semi-transparent backgrounds.
-  - Responsive design with `max-width: 1000px` and flexible units.
-  - Hover effects (scale, shadows) on interactive elements.
-- **External Dependency**: Google Fonts CDN for "Orbitron" (`<link>` in `<head>`).
+**Key Sections in `index.html`**:
 
-### JavaScript
-- **Initialization**:
-  - Sets up the gradient canvas with a red-to-violet `LinearGradient`.
-  - Defines the `notes` array (A3–A5) and initial state variables (`isInteracting`, `currentX`, etc.).
-- **Audio**:
-  - `playTone(freq)`: Creates two oscillators (triangle, sine) with a low-pass filter, connected via a gain node.
-  - `stopTone()`: Stops all oscillators.
-- **Gradient Interaction**:
-  - Event listeners (`mousedown`, `mousemove`, `mouseup`, etc.) handle dragging, updating frequency and visuals.
-  - `getFrequency()`: Calculates frequency based on position and mode.
-- **Piano**:
-  - Draws 25 keys with gradient colors, white borders, and note labels.
-  - Click/touch events trigger tones and updates.
-- **Songs**:
-  - `songs` object stores preloaded and custom melodies as arrays of `{ note, dur }`.
-  - `updateSongDropdown()`: Populates the `<select>` with song names.
-  - Playback via `setInterval` with note sequencing.
-- **Custom Melodies**:
-  - Parses text input, validates notes and durations, and adds to `songs`.
-- **Visualizations**:
-  - `updateSoundWave(freq, color)`: Draws a sine wave with dynamic wavelength.
-  - `updateLightSpectrum(freq, color)`: Updates the spectrum marker.
+- **HTML**:
+  - Structured with `<header>`, `<main>`, and `<footer>`.
+  - `<main>` contains sections for each feature (e.g., "Paint with Sound," "Tickle the Color Piano").
+  - Uses semantic elements and canvases for visualizations.
+- **CSS**:
+  - Embedded in `<style>` with CSS variables (e.g., `--primary-color: #00ffcc`).
+  - Defines a sci-fi look with gradients, shadows, and blur effects.
+  - Responsive layout using flexbox and max-width.
+- **JavaScript**:
+  - Embedded in `<script>` at the end of `<body>`.
+  - Organized into classes: `AppState`, `AudioManager`, `Visualizer`, `SongManager`.
+  - Handles audio, canvas rendering, event listeners, and melody parsing.
 
 ---
 
 ## Technical Information for Developers
 
-### Dependencies
-- **None (Core)**: All functionality uses native HTML5 APIs (Web Audio, Canvas).
-- **Optional**: Google Fonts CDN (`Orbitron`) for styling; can be removed or replaced with a local font.
+### Technologies Used
 
-### Browser Compatibility
-- Requires a modern browser supporting:
-  - Web Audio API (Chrome, Firefox, Safari, Edge).
-  - Canvas 2D API.
-  - CSS `backdrop-filter` (not supported in older browsers like IE; falls back gracefully).
-- Tested on Chrome 120+, Firefox 115+, Safari 16+.
+- **HTML5**: Semantic structure and canvas elements for visualizations.
+- **CSS3**: Custom properties, gradients, transitions, and backdrop-filter for styling.
+- **JavaScript (ES6+)**:
+  - Classes for modularity (`AppState`, `AudioManager`, etc.).
+  - Web Audio API for tone generation (oscillators, gain, filters).
+  - Canvas API for drawing gradients, piano keys, sound waves, and spectra.
+  - Event listeners for mouse and touch interactions.
+- **No External Dependencies**: Purely vanilla JavaScript, ensuring lightweight performance.
 
-### Sound Generation
-- **Oscillators**: 
-  - `osc1`: Triangle wave for warmth.
-  - `osc2`: Sine wave, detuned by 1.02x for richness.
-- **Filter**: Low-pass at 2000 Hz to smooth harsh edges.
-- **Gain**: Set to 0.4 to avoid clipping.
+### Key Components
 
-### Frequency Mapping
-- **Continuous Mode**: `freq = 220 * 2^(x * 2)` where `x` is the gradient position (0–1), spanning 220–880 Hz exponentially.
-- **Discrete Mode**: Maps `x` to 25 semitones (A3–A5), `freq = 220 * 2^(n / 12)` where `n = round(x * 24)`.
+1. **AppState**:
+   - Manages application state (e.g., `isInteracting`, `currentX`, `pressedKeyIndex`).
+   - Tracks mode (`continuous` or `discrete`) and song playback status.
 
-### Custom Melody Format
-- **Input**: Plain text, e.g., "C4 400, D4 400, E4 800".
-  - `note`: Must be in `notes` (A3–A5).
-  - `dur`: Positive integer (ms), typically 200–1200.
-  - Parts separated by commas, note and duration by whitespace.
-- **Validation**: Checks note validity and duration parsing, alerts on errors.
+2. **AudioManager**:
+   - Uses Web Audio API to create and control oscillators (triangle and sine waves).
+   - Applies a low-pass filter and gain for smooth sound.
+   - Configurable via `CONFIG` (e.g., `MIN_FREQ: 220`, `MAX_FREQ: 880`).
+
+3. **Visualizer**:
+   - Handles all canvas rendering:
+     - Gradient canvas maps colors to frequencies.
+     - Piano canvas draws 25 keys with colors, labels, and effects.
+     - Sound wave canvas renders sine waves based on frequency.
+     - Light spectrum canvas maps frequencies to a rainbow gradient.
+   - Manages mouse and touch events for interactive elements.
+
+4. **SongManager**:
+   - Stores melodies as arrays of `{ note, dur }` objects.
+   - Parses user input for custom melodies (e.g., `C4 400, D4 400`).
+   - Updates the song dropdown and handles playback logic.
+
+### Configuration
+
+The `CONFIG` object defines core settings:
+
+```javascript
+const CONFIG = {
+    NOTES: ['A3', 'A#3', 'B3', ..., 'A5'], // 25 notes, two octaves
+    MIN_FREQ: 220,                         // Lowest frequency (A3)
+    MAX_FREQ: 880,                         // Highest frequency (A5)
+    CANVAS_WIDTH: Math.min(1000, window.innerWidth * 0.8),
+    GAIN_VALUE: 0.4                        // Audio volume
+};
+```
 
 ---
 
 ## How to Run
-1. **Download**: Save the file as `chromatic_symphony.html`.
-2. **Open**: Load in a modern browser (e.g., Chrome) via a local file or a simple web server (e.g., `python -m http.server`).
-3. **Interact**:
-   - Drag the gradient or tap piano keys to play tones.
-   - Select a song from the dropdown and click "Play" (stop with "Stop").
-   - Create a melody:
-     - Name: e.g., "My Song".
-     - Text: e.g., "G4 400, A4 400, G4 800".
-     - Click "Save Melody" to add and play.
+
+### Prerequisites
+
+- A modern web browser (e.g., Chrome, Firefox, Safari) with support for Web Audio API and Canvas API.
+- A local web server (recommended) due to browser security restrictions on `file://` URLs for audio.
+
+### Steps
+
+1. **Clone the Repository**:
+   ```bash
+   git clone https://github.com/JamalYusuf/Chromatic-Symphony.git
+   cd chromatic-symphony
+   ```
+
+2. **Serve the Application**:
+   - Option 1: Use a simple HTTP server:
+     ```bash
+     python3 -m http.server 8000
+     ```
+     Or with Node.js:
+     ```bash
+     npx serve
+     ```
+   - Option 2: Use VS Code’s Live Server extension.
+
+3. **Access the App**:
+   - Open your browser and navigate to `http://localhost:8000` (or the port provided by your server).
+   - The app should load, displaying the "Chromatic Symphony" interface.
+
+4. **Test Features**:
+   - Drag the gradient to play tones.
+   - Click piano keys to hear notes and see colors.
+   - Play the preloaded "Twinkle" song or create a new melody.
+
+### Troubleshooting
+
+- **No Sound**: Ensure your browser allows audio and that Web Audio API is supported. Check the console for errors.
+- **Canvas Not Rendering**: Verify canvas dimensions (`CONFIG.CANVAS_WIDTH`) and browser compatibility.
+- **Local File Issues**: Use a web server instead of opening `index.html` directly to avoid CORS restrictions.
 
 ---
 
 ## Usage Examples
 
-### Playing a Preloaded Song
-- Select "Imperial March" from the dropdown.
-- Click "Play" to hear the Star Wars theme as colors light up the gradient.
+### Example 1: Playing the Piano
+- Navigate to the "Tickle the Color Piano" section.
+- Click the fifth key from the left (C4, ~261 Hz).
+- Observe:
+  - The key presses down (5px offset).
+  - The note display shows "C4".
+  - A green color appears (mapped to C4’s frequency).
+  - Sound wave and light spectrum canvases update.
 
-### Creating a Custom Melody
-- **Name**: "Chill Vibe".
-- **Melody**: "E4 400, G4 400, A4 400, E4 800".
-- **Action**: Enter, click "Save Melody", select "Chill Vibe", and "Play".
-- **Result**: A simple melody plays with corresponding visuals.
+### Example 2: Creating a Melody
+- Go to the "Songs in Color" section, under "Create Your Own Melody".
+- Enter:
+  - Name: `My Tune`
+  - Melody: `C4 400, D4 400, E4 400, G4 800`
+- Click "Save Melody".
+- Select "My Tune" from the dropdown and click "Play".
+- Watch the melody play with colors transitioning from green (C4) to blue (G4), accompanied by visualizations.
+
+### Example 3: Painting with Sound
+- In the "Paint with Sound" section, drag the gradient canvas.
+- Switch between "Continuous" (smooth frequencies) and "Discrete" (snaps to notes) modes using the toggle button.
+- Note how the sound wave amplitude and light spectrum marker adjust in real-time.
 
 ---
 
 ## Extending the Project
 
-### Potential Enhancements
-1. **Persistent Storage**: Use `localStorage` to save custom melodies across sessions.
-   - Example: `localStorage.setItem('customSongs', JSON.stringify(songs));`.
-2. **More Visualizations**: Add 3D particles or frequency bars using Three.js (requires CDN).
-3. **Sound Options**: Allow users to select oscillator types (e.g., square, sawtooth).
-4. **Export Melodies**: Add a button to download custom melodies as JSON or text.
+Developers can enhance *Chromatic Symphony* with new features. Here are some ideas and guidance:
 
-### Code Modifications
-- **Add a Visualization**: Insert a new `<canvas>` in a section, define its context, and update it in `updateDisplay()`.
-- **New Songs**: Extend the `songs` object with additional `{ note, dur }` arrays.
-- **Custom Styling**: Modify CSS variables or add new classes for a different aesthetic.
+1. **Add More Notes**:
+   - Expand `CONFIG.NOTES` to include lower (e.g., C3) or higher (e.g., B5) notes.
+   - Adjust `MIN_FREQ` and `MAX_FREQ` accordingly.
+   - Update piano rendering to accommodate more keys.
+
+2. **Support Chords**:
+   - Modify `SongManager.saveMelody` to parse multiple notes per duration (e.g., `C4+E4 400`).
+   - Update `AudioManager.playTone` to play multiple oscillators simultaneously.
+
+3. **Real-Time Melody Preview**:
+   - Add a "Preview" button that plays the melody as typed without saving.
+   - Use `input` event listeners on `melodyInput` to validate notes live.
+
+4. **Export/Import Melodies**:
+   - Add buttons to download melodies as JSON:
+     ```javascript
+     const blob = new Blob([JSON.stringify(songs.songs)], { type: 'application/json' });
+     const url = URL.createObjectURL(blob);
+     ```
+   - Implement file input to load melodies.
+
+5. **Dynamic Themes**:
+   - Allow users to switch color schemes by updating CSS variables (e.g., `--primary-color`).
+   - Store preferences in `localStorage`.
+
+6. **MIDI Support**:
+   - Integrate Web MIDI API to connect physical keyboards.
+   - Map MIDI notes to `CONFIG.NOTES` for real-time play.
+
+### Adding a New Feature
+
+To add a new section (e.g., a waveform selector):
+
+1. **HTML**: Add a new `<section class="section">` in `<main>` with a canvas and controls.
+2. **CSS**: Style it to match the sci-fi aesthetic (use `--primary-color`, etc.).
+3. **JavaScript**:
+   - Extend `Visualizer` with a new canvas initialization method.
+   - Add event listeners in `Visualizer` for interaction.
+   - Update `updateAll` to include the new visualization.
+4. **Test**: Ensure it integrates with existing audio and state management.
 
 ---
-
-## Known Limitations
-- **Persistence**: Custom melodies are lost on page refresh (no backend or localStorage yet).
-- **Browser Support**: Older browsers may lack Web Audio or `backdrop-filter` support.
-- **Performance**: High-frequency interactions might lag on low-end devices due to real-time audio and canvas updates.
-
----
-
-## Developer Notes
-- **Debugging**: Use browser dev tools (F12) to inspect audio context or canvas rendering issues.
-- **Testing**: Validate custom melodies with edge cases (e.g., "Z4 400", "C4 -100").
-- **Contributions**: Feel free to fork and enhance—add new songs, visuals, or features!
+**Tips**:
+- Use the browser dev tools to inspect canvas rendering and audio context.
+- Log `state` changes to debug interactions.
+- Profile performance with Chrome’s Performance tab for long melodies.
 
 ---
 
 ## Credits
-- **Author**: Jamal Yusuf.
-- **Inspiration**: Synesthesia, Winamp visualizers, generative art pioneers like Casey Reas.
 
-Enjoy exploring Chromatic Symphony—a fusion of code, sound, and color! Let me know how you’d like to remix it.
+- **Author**: Jamal Yusuf (concept and implementation).
+- **Inspiration**:
+  - Synesthesia, the blending of senses.
+  - Retro Winamp visualizers for dynamic graphics.
+  - Generative art for organic visuals.
+- **Technologies**:
+  - Web Audio API and Canvas API (W3C standards).
+  - Google Fonts (Orbitron, Roboto).
+- **Contributors**: Open to contributions! See [Extending the Project](#extending-the-project).
+
+---
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
+
+> Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction...
+
+---
+
+### Additional Notes for Contributors
+
+- **Issues**: Report bugs or suggest features via GitHub Issues.
+- **Pull Requests**: Submit PRs with clear descriptions and tests.
+- **Code Style**: Follow ESLint defaults and keep code readable (e.g., consistent indentation, descriptive variable names).
+- **Testing**: Test on multiple browsers and devices, especially for touch events.
+
+We welcome contributions to make *Chromatic Symphony* even more vibrant! 🎹🌈
